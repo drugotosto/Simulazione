@@ -29,4 +29,3 @@ def ritornaIndiceStazione(md,indice,indStazione):
 
 
 
-dsadas
