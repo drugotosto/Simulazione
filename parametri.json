@@ -1,0 +1,36 @@
+{
+  "stazioni":
+  [
+    {
+      "id": 0,
+      "nome": "terminali",
+      "s": 2.0,
+      "tipo": "infinite"
+    },
+    {
+      "id": 1,
+      "nome": "cpu",
+      "s": 0.03,
+      "tipo": "server"
+    },
+    {
+      "id": 2,
+      "nome": "I/O",
+      "s": 0.5,
+      "tipo": "server"
+    },
+    {
+      "id": 3,
+      "nome": "Riposo",
+      "s": 200.0,
+      "tipo": "infinite"
+    }
+  ],
+  "q":
+  [
+    [0, 1, 0, 0],
+    [0.09, 0.8, 0.1, 0.01],
+    [0, 1, 0, 0],
+    [1, 0, 0, 0]
+  ]
+}
