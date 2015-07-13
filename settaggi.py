@@ -6,3 +6,9 @@ __author__ = 'maury'
 
 # Indice di riferimento preso in considerazione
 indice_rif=0
+
+# Numero Persone totali nel sistema
+n=4
+
+# Numero Delle stazioni
+m=4

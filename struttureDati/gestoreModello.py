@@ -6,14 +6,14 @@ __author__ = 'maury'
 """
 
 import json
-
+from settaggi import *
 from struttureDati.modello import *
 
 
-def caricamentoModello(path,dim):
+def caricamentoModello(path):
     with open(path) as file:
         model = json.loads(file.read())
-        return Modello(model["stazioni"],model["q"],dim)
+        return Modello(model["stazioni"],model["q"],n)
 
 def stampaStazioni(md):
     for staz in  md.stazioni:

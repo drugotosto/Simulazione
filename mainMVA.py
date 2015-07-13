@@ -6,11 +6,9 @@ from struttureDati import gestoreModello as gsm
 from mva import *
 
 if __name__=='__main__':
-    # Definzione #persone per cui si calcolano gli indici di prestazione
-    dim=100
 
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
-    md=gsm.caricamentoModello("parametri.json",dim)
+    md=gsm.caricamentoModello("parametri.json")
      # Calcolo le visite del modello prendendo come riferiemento la stazione 0(terminali collegati)
     calcoloVisite(md,indice_rif)
 
@@ -25,8 +23,8 @@ if __name__=='__main__':
     dMax=max(controlloStazione(md))
 
     print "******IMPLEMENTAZIOME MVA ******"
-    calcoloIndiciPrestazione(md,dim)
+    calcoloIndiciPrestazione(md)
 
     # Stampa dei grafici (settare opportunamente l'indice scelto)
     indici=gsm.ritornaIndice(md,'N')
-    graficiIndice(indici,dim)
+    graficiIndice(indici)

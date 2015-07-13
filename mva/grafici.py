@@ -1,11 +1,12 @@
 __author__ = 'maury'
 
+from settaggi import *
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Creazione grafici dei vari indici per le varie stazioni
-def graficiIndice(indici,dim):
-    x=np.arange(dim+1)
+def graficiIndice(indici):
+    x=np.arange(n+1)
     y0=indici[0]
     y1=indici[1]
     y2=indici[2]

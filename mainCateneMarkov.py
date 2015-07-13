@@ -3,17 +3,18 @@ __author__ = 'maury'
 """
     MAIN PRINCIPALE
 """
+import numpy as np
 from settaggi import *
-from struttureDati import gestoreModello as gsm
-from analisiOperazionale import *
 from cateneMarkov import *
 
-
 if __name__=='__main__':
-    print "\nCostruzione catena di MArkov del modello dato come progetto finale (modello di un sistema)\n"
+    print "Costruzione catena di Markov del modello dato come progetto finale (modello di un sistema)"
 
-    # Definzione #persone per cui si calcolano gli indici di prestazione
-    dim=2
+    spazio=generaSpazioStati(n,m)
+    print "spazioINAZIONI:",spazio,"\nnumero:",len(spazio)
 
-    comb=generaCombinazioni()
-    print("COMBINAZIONI:",comb)
+    # Dizionario con indice numerico 0,1,2,... con valori tuple formate da: ((x,x,x,x),'(x,x,x,x))
+    vettPI={i:(stat,str(stat)) for i,stat in enumerate(spazio)}
+
+    matQ=np.zeros((len(spazio),len(spazio)))
+    print "Vettore:",vettPI

@@ -1,26 +1,26 @@
 __author__ = 'maury'
 
+from settaggi import *
 import numpy as np
 import struttureDati.gestoreModello as gsm
 
-def calcoloIndiciPrestazione(md,dim):
-    n=dim
-    nMedio=np.zeros((dim+1,4))
-    xMedio=np.zeros((dim+1,4))
-    wMedio=np.zeros((dim+1,4))
-    uMedio=np.zeros((dim+1,4))
-    rMedio=np.zeros((dim+1,4))
+def calcoloIndiciPrestazione(md):
+    nMedio=np.zeros((n+1,m))
+    xMedio=np.zeros((n+1,m))
+    wMedio=np.zeros((n+1,m))
+    uMedio=np.zeros((n+1,m))
+    rMedio=np.zeros((n+1,m))
 
-    ricorsioneN(n,md,dim,xMedio,nMedio,wMedio,uMedio,rMedio)
+    ricorsioneN(md,n,xMedio,nMedio,wMedio,uMedio,rMedio)
 
     # Salvataggio dei vari indici di prestazione per le diverse stazioni all'interno del modello
     md.salvaIndici(nMedio,xMedio,wMedio,uMedio,rMedio)
 
     # Funzione di test per verifica indici
-    test(md,dim)
+    test(md,n)
 
 
-def ricorsioneN(n,md,dim,xMedio,nMedio,wMedio,uMedio,rMedio):
+def ricorsioneN(md,n,xMedio,nMedio,wMedio,uMedio,rMedio):
     # Caso base
     if n==0:
         # Ciclo su tutte le stazioni per il calcolo
@@ -28,7 +28,7 @@ def ricorsioneN(n,md,dim,xMedio,nMedio,wMedio,uMedio,rMedio):
             nMedio[n][j]=0.0
     # Caso con N>=1
     else:
-        ricorsioneN(n-1,md,dim,xMedio,nMedio,wMedio,uMedio,rMedio)
+        ricorsioneN(md,n-1,xMedio,nMedio,wMedio,uMedio,rMedio)
         # Iterazione su tutte le stazioni per il calcolo dei vari W
         for j in range(len(md.stazioni)):
             # Differenzio per il calocolo delle W
@@ -65,19 +65,19 @@ def calcoloTempoCiclo(n,md,wMedio,rMedio):
     return tot
 
 
-def test(md,dim):
+def test(md,n):
     # Calcolo delle prob del #persone alle varie stazioni
-    calcoloProb(md,dim)
+    calcoloProb(md)
 
     # Verifia che le righe delle varie prob delle stazioni sommano a 1
     # print "Somma :",[map(sum,md.stazioni[i].prob) for i in range(4)]
 
     # Calcolo #Medio persone per stazione
-    #   numMedioPersone(md,dim)
+    # numMedioPersone(md)
 
     # Somma per colonne del #Medio di persone su ogni stazione
     lista=[]
-    for j in range(dim+1):
+    for j in range(n+1):
         som=0.0
         for i in range(len(md.stazioni)):
             som+=md.stazioni[i].indici['N'][j]
@@ -91,11 +91,11 @@ def test(md,dim):
         print "La lista di indici N per la stazione ",i,": ",listaIndici[i]
 
 
-def calcoloProb(md,dim):
+def calcoloProb(md):
     # Ciclo sulle varie stazioni...
     for i in range(len(md.stazioni)):
         # Ciclo sulle righe delle prob di ogni stazione..
-        for j in range(dim):
+        for j in range(n):
             # Ciclo sulle colonne di ogni stazione partendo dal "fondo"
             z=j
             while(z>0):
@@ -119,11 +119,11 @@ def calcoloProb(md,dim):
                     y+=1
                 md.stazioni[i].prob[j][z]=1.0-som
 
-def numMedioPersone(md,dim):
+def numMedioPersone(md):
     # Ciclo sulle varie stazioni...
     for i in range(len(md.stazioni)):
         # Calcolo la prob al variare delle persone nel sistema partendo da 1
-        for j in range(1,dim):
+        for j in range(1,n):
             k=1
             som=0.0
             while (k<=j):

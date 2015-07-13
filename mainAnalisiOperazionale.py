@@ -12,10 +12,9 @@ if __name__=='__main__':
     print "\nAnalisi del modello analitico dato come progetto finale (modello di un sistema)"
 
     # Definzione #persone per cui si calcolano gli indici di prestazione
-    dim=100
 
     # Costruzione del modello analitico preso in esame da un file json da cui si recuperano i parametri in ingresso
-    md=gsm.caricamentoModello("parametri.json",dim)
+    md=gsm.caricamentoModello("parametri.json")
     # Calcolo le visite del modello prendendo come riferiemento la stazione 0(terminali collegati)
     visite=calcoloVisite(md,indice_rif)
     print "\nLe visite fatte alle varie stazioni durante il periodo di osservazione T (Prendendo come riferimento la stazione 0) risultano essere: "
