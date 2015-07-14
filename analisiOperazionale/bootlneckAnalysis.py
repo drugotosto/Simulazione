@@ -3,6 +3,25 @@ __author__ = 'maury'
 import numpy as np
 
 def calcoloVisite(md,ind):
+
+    """ Visit vector is computed using
+               V = VQ
+
+         The Scipy library can solve only linear system
+         in the form  A X = b
+
+         So we transform the system in:
+           VQ = V => VQ -V = 0
+               => V (Q -I) = 0 => V Q' = 0
+
+         then we have:
+               V Q' = 0
+         if we transpose the VQ' product, since Q is square, we have:
+           (VQ').T = 0 <=> Q'.T V.T = 0
+
+         The resulting system is not yet determined so we substitute
+         an equation (let's say the first) with V_0 = 1"""
+
     # transition matrix
     q = np.array(md.q)
     # identity matrix
