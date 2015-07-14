@@ -15,6 +15,10 @@ def caricamentoModello(path):
         model = json.loads(file.read())
         return Modello(model["stazioni"],model["q"],n)
 
+# Aggiunta al modello della catena di markov corrispondente con all'interno N persone
+def aggiungiSpazio(md,spazioStati,n):
+    md.setSpazio(spazioStati,n)
+
 def stampaStazioni(md):
     for staz in  md.stazioni:
         print "Stazione ",staz.id,": ",vars(staz)

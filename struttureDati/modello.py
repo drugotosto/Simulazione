@@ -16,6 +16,10 @@ class Modello():
             self.stazioni.append(Stazione(staz,dim))
         self.q=q
 
+    def setSpazio(self,spazioStati,n):
+        self.spazioStati=spazioStati
+        self.numPersone=n
+
     def aggiornaVisite(self,visite):
         for staz,val in zip(self.stazioni,visite):
             staz.visite=val
