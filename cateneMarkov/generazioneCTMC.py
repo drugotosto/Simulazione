@@ -86,14 +86,15 @@ def costruzioneRigaQ(md, q, i, stato, statiOut):
     print "la riga per lo stato", stato, "e:", riga[0]
 
     # Ricerco le diverse colonne della matrice Q e setto con il corrispondente valore
-    listaCol=[]
     for statOut in statiOut:
         # Metodo per riuscire a trovare l'indice relativo alla colonna della matrice Q su cui poi andare a settare il giusto valore
         colonna = [key for key, value in md.spazioStati.items() if value[0] == tuple(statOut[0])]
         print "La colonna per lo stato ", statOut, "e:", colonna[0]
-        listaCol.append(colonna[0])
 
-    # print "riga:",riga[0],"colonne:",listaCol
+        """Ricordarsi che manca ancora da calcolare come valore da inserire nella matrice Q quello sulla
+           diagonale avente valore (-somma_righe). Costrutire un dizionario con {i:[(colonna,val),[...]]"""
+
+
 
 
 
