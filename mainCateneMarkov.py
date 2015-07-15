@@ -9,12 +9,14 @@ from cateneMarkov import *
 from struttureDati import gestoreModello as gsm
 
 if __name__=='__main__':
-    print "Costruzione catena di Markov del modello dato come progetto finale (modello di un sistema)"
+    print "Costruzione catena di Markov del modello dato come progetto finale (modello di un sistema)\n"
 
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
     md=gsm.caricamentoModello("parametri.json")
 
+    # Generazione dello spazio degli stati
     spazio=generaSpazioStati()
+
     """if (11,0,2,2) in spazio:
         print "Presente"
     else:
@@ -27,12 +29,11 @@ if __name__=='__main__':
     # Aggiunta dello spazio degli stati al modello
     gsm.aggiungiSpazio(md,spazioStati,n)
 
-    # print "Spazio deglis stati:",md.spazioStati
+    print "Spazio deglis stati:",md.spazioStati
+    print "Lunghezza Spazio degli stati: ",len(md.spazioStati)
 
     # Chiamata per la creazione della matrice Q
     creazioneMatriceQ(md)
-
-    print "Lunghezza: ",len(md.spazioStati)
 
 
 
