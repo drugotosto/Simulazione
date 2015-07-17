@@ -23,7 +23,7 @@ class Stazione():
         self.visite=np.float64(0)
         self.domande=np.float64(0)
         self.indici={'X':np.zeros(dim),'W':np.zeros(dim),'N':np.zeros(dim),'U':np.zeros(dim),'R':np.zeros(dim)}
-        self.prob=[[0 for x in np.zeros(dim)]for y in np.zeros(dim)]
+        self.prob=dict.fromkeys(range(dim),np.float64(0))
 
     def __getattr__(self, item):
         return 0

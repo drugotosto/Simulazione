@@ -4,6 +4,8 @@ __author__ = 'maury'
     Classe che descrive il modello analitico preso in esame formato da:
     - stazioni: lista di oggetti di tipo "stazione"
     - q: matrice delle tranzioni
+    - spazioStati: spazio degli stati totale con "n" persone all'interno del sistema
+    - n: numero persone totali all'interno del sistema
 """
 
 from struttureDati.stazione import *

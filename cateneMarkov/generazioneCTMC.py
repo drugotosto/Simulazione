@@ -1,11 +1,11 @@
 __author__ = 'maury'
 import itertools
 import numpy as np
-from settaggi import *
+from settaggi import m
 
 
 #
-def generaSpazioStati():
+def generaSpazioStati(n):
     # Prodotto Cartesiano di tutti i possibili elementi dati dall'array (0,1,2,3,...15)
     comb = list(itertools.product(range(0, n + 1), repeat=m))
     # Si sottraggono poi tutti questi elementi la cui somma non arriva ad un totale di n
@@ -96,9 +96,6 @@ def mappStatiVel(md,stato,statiOut):
         colonna = [key for key, value in md.spazioStati.items() if value[0] == tuple(statOut[0])]
         print "La colonna per lo stato ", statOut, "e:", colonna[0]
 
-        """Ricordarsi che manca ancora da calcolare come valore da inserire nella matrice Q quello sulla
-           diagonale avente valore (-somma_righe). Costrutire un dizionario con {i:[(colonna,val),[...]]"""
-
         listStatVel.append([colonna[0],statOut[1]])
          # Rimozione celle vuote
         listStatVel=[x for x in listStatVel if x != []]
@@ -113,3 +110,11 @@ def costruzioneRigaQ(i,listStatVel,q):
         q[i][statVel[0]]=statVel[1]
         som+=statVel[1]
     q[i][i]=-som
+
+# Risoluzione sistema di eq. lineari per il calcolo della distribuzione di prob dei vari stati
+def risoluzioneSistema(q):
+    q = q.transpose()
+    q[-1] = np.ones(len(q))
+    b = np.zeros(len(q))
+    b[-1] = 1
+    return np.linalg.solve(q, b)
