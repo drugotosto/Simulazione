@@ -33,7 +33,9 @@ if __name__=='__main__':
     print "Lunghezza Spazio degli stati: ",len(md.spazioStati)
 
     # Chiamata per la creazione della matrice Q
-    creazioneMatriceQ(md)
+    q=creazioneMatriceQ(md)
+
+    print "\nLA MATRICE Q risulta essere:",q
 
 
 

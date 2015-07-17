@@ -26,18 +26,22 @@ def creazioneMatriceQ(md):
     # - Eseguo la trasposta della matrice Q per passare da piGreco*Q=0 -> Q*piGreco=0 e setto la
     # condizione iniziale
 
-    print "P:", md.q
+    # print "P:", md.q
 
     # Ciclo su tutto lo spazio degli stati
     for i, stato in md.spazioStati.items():
-        # Per ogni stati ritorna i corrispondenti la lista degli stati in output
+        # Per ogni stato ritorna i corrispondenti la lista degli stati in output
         statiOut=ricercaStatiUscita(stato, md)
 
-        print "La lista di stazioni in output per lo stato", stato[0], "e:", statiOut
+        print "La lista di stazioni con corrispondente valore da inserire nella matrice Q in output per lo stato", stato[0], "e:", statiOut
+
+        #metodo che ritorna una lista di stati destinatari associati allo stato di partenza con relative velocita
+        listStatVel=mappStatiVel(md,stato[0],statiOut)
+
+        print "Lo stato ha indice:",i ,"e la lista statVel:",listStatVel
 
         # Costruzione di una riga alla volta per la matrice Q
-        costruzioneRigaQ(md, q, i, stato[0], statiOut)
-
+        costruzioneRigaQ(i,listStatVel,q)
     return q
 
 
@@ -80,11 +84,12 @@ def ricercaStatiUscita(stato, md):
     return listaStat
 
 
-def costruzioneRigaQ(md, q, i, stato, statiOut):
+def mappStatiVel(md,stato,statiOut):
     # Ricerco riga della matrice Q su cui andare a settare i valori
     riga = [key for key, value in md.spazioStati.items() if value[0] == stato]
     print "la riga per lo stato", stato, "e:", riga[0]
 
+    listStatVel=[[]]
     # Ricerco le diverse colonne della matrice Q e setto con il corrispondente valore
     for statOut in statiOut:
         # Metodo per riuscire a trovare l'indice relativo alla colonna della matrice Q su cui poi andare a settare il giusto valore
@@ -94,7 +99,17 @@ def costruzioneRigaQ(md, q, i, stato, statiOut):
         """Ricordarsi che manca ancora da calcolare come valore da inserire nella matrice Q quello sulla
            diagonale avente valore (-somma_righe). Costrutire un dizionario con {i:[(colonna,val),[...]]"""
 
+        listStatVel.append([colonna[0],statOut[1]])
+         # Rimozione celle vuote
+        listStatVel=[x for x in listStatVel if x != []]
 
+    # print "Lista stati velocita: ",listStatVel
+    return listStatVel
 
-
-
+# Costruzione di una riga alla volta della matrice Q
+def costruzioneRigaQ(i,listStatVel,q):
+    som=0.0
+    for statVel in listStatVel:
+        q[i][statVel[0]]=statVel[1]
+        som+=statVel[1]
+    q[i][i]=-som
