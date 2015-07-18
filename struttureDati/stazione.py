@@ -14,7 +14,7 @@ __author__ = 'maury'
 import numpy as np
 
 class Stazione():
-    def __init__(self,stazione,dim):
+    def __init__(self,stazione,n):
         # self.__dict__.update(stazione)
         self.id=stazione["id"]
         self.nome=stazione["nome"]
@@ -22,8 +22,8 @@ class Stazione():
         self.s=np.float64(stazione["s"])
         self.visite=np.float64(0)
         self.domande=np.float64(0)
-        self.indici={'X':np.zeros(dim),'W':np.zeros(dim),'N':np.zeros(dim),'U':np.zeros(dim),'R':np.zeros(dim)}
-        self.prob=dict.fromkeys(range(dim),np.float64(0))
+        self.indici={'X':np.zeros(n),'W':np.zeros(n),'N':np.zeros(n),'U':np.zeros(n),'R':np.zeros(n)}
+        self.prob=dict.fromkeys(range(n+1),np.float64(0))
 
     def __getattr__(self, item):
         return 0

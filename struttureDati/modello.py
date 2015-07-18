@@ -11,11 +11,11 @@ __author__ = 'maury'
 from struttureDati.stazione import *
 
 class Modello():
-    def __init__(self,stazioni,q,dim):
+    def __init__(self,stazioni,q,n):
         self.stazioni=[]
         # Lista di dizioniari che verra trasormata in una lista di oggetti Stazione
         for staz in stazioni:
-            self.stazioni.append(Stazione(staz,dim))
+            self.stazioni.append(Stazione(staz,n))
         self.q=q
 
     def setSpazio(self,spazioStati,n):
