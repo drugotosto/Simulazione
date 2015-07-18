@@ -9,6 +9,7 @@ __author__ = 'maury'
 """
 
 from struttureDati.stazione import *
+from settaggi import m
 
 class Modello():
     def __init__(self,stazioni,q,n):
@@ -37,7 +38,7 @@ class Modello():
         return sumD
 
     def salvaIndici(self,nMedio,xMedio,wMedio,uMedio,rMedio):
-        for i in range(4):
+        for i in range(m):
             colX=[row[i] for row in xMedio]
             colN=[row[i] for row in nMedio]
             colW=[row[i] for row in wMedio]

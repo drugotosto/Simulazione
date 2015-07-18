@@ -1,15 +1,15 @@
 __author__ = 'maury'
 import numpy as np
-from settaggi import m
+from settaggi import *
 
 
-def calcoloIndiciPrest(md,piG,n):
+def preparazioneCalcoloIndici(md,piG,dim):
     # Calcolo delle varie P(k,n) e ritorna la corrispondente matrice
-    matPk=settaggioProbStaz(md,piG,n+1)
+    matPk=settaggioProbStaz(md,piG,dim+1)
 
     # Salvataggio nel modello delle varie distribuzioni per le varie stazioni al variare del n_persone
     for i in range(len(matPk)):
-        md.stazioni[i].prob[n]=matPk[i]
+        md.stazioni[i].prob[dim]=matPk[i]
 
     # Stampa...
     for i in range(len(matPk)):
@@ -17,8 +17,6 @@ def calcoloIndiciPrest(md,piG,n):
         for val in md.stazioni[i].prob.items():
             print "Con N:",val[0],"persone dentro avremo P:",val[1]
 
-    # Calcolo degli indici veri e propri
-    calcoloIndici(md)
 
 # Calcolo delle varie P(k,n) per le diverse stazioni dato la distr. di prob. per un dato valore di n
 def settaggioProbStaz(md,piG,dim):
@@ -43,3 +41,27 @@ def settaggioProbStaz(md,piG,dim):
 
 def calcoloIndici(md):
     print "\n------INDICI DI PRESTAZIONE-------"
+
+    nMedio=np.zeros((m,n+1))
+    xMedio=np.zeros((m,n+1))
+    wMedio=np.zeros((m,n+1))
+    uMedio=np.zeros((m,n+1))
+    rMedio=np.zeros((m,n+1))
+
+
+    # Ciclo su tutti i valori di "n"
+    for i in range(1,n+1):
+        # Ciclo su tutte le stazioni
+        for j in range(len(md.stazioni)):
+            z=1.0
+            while z<=i:
+                if  md.stazioni[j].tipo=="server":
+                    # Calcolo X
+                    xMedio[j][i]+=(1.0/md.stazioni[j].s)*md.stazioni[j].prob[i][z]
+                elif md.stazioni[j].tipo=="infinite":
+                    xMedio[j][i]+=(1.0/(md.stazioni[j].s/z))*md.stazioni[j].prob[i][z]
+                nMedio[j][i]+=z*md.stazioni[j].prob[i][z]
+                z+=1
+
+    # STAMPA...
+    print "nMEDIO:\n",nMedio

@@ -67,7 +67,7 @@ def calcoloTempoCiclo(n,md,wMedio,rMedio):
 
 def test(md,n):
     # Calcolo delle prob del #persone alle varie stazioni
-    calcoloProb(md)
+    # calcoloProb(md)
 
     # Verifia che le righe delle varie prob delle stazioni sommano a 1
     # print "Somma :",[map(sum,md.stazioni[i].prob) for i in range(4)]
@@ -86,9 +86,9 @@ def test(md,n):
     # print("Somma N:",lista)
 
     # Stampa dei valori degi vari indici per tutte le stazioni
-    listaIndici=gsm.ritornaIndice(md,'N')
+    listaIndici=gsm.ritornaIndice(md,'X')
     for i in range(len(md.stazioni)):
-        print "La lista di indici N per la stazione ",i,": ",listaIndici[i]
+        print "La lista di indici X per la stazione ",i,": ",listaIndici[i]
 
 
 def calcoloProb(md):

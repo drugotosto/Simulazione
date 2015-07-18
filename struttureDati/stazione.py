@@ -24,6 +24,7 @@ class Stazione():
         self.domande=np.float64(0)
         self.indici={'X':np.zeros(n),'W':np.zeros(n),'N':np.zeros(n),'U':np.zeros(n),'R':np.zeros(n)}
         self.prob=dict.fromkeys(range(n+1),np.float64(0))
+        self.indiciMark={'X':np.zeros(n),'W':np.zeros(n),'N':np.zeros(n),'U':np.zeros(n),'R':np.zeros(n)}
 
     def __getattr__(self, item):
         return 0
