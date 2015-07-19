@@ -109,7 +109,7 @@ def costruzioneRigaQ(i,listStatVel,q):
     for statVel in listStatVel:
         q[i][statVel[0]]=statVel[1]
         som+=statVel[1]
-    q[i][i]=-som
+    q[i][i]-=som
 
 # Risoluzione sistema di eq. lineari per il calcolo della distribuzione di prob dei vari stati
 def risoluzioneSistema(q):

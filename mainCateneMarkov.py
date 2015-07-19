@@ -7,12 +7,16 @@ import numpy as np
 from settaggi import *
 from cateneMarkov import *
 from struttureDati import gestoreModello as gsm
+from analisiOperazionale import calcoloVisite
 
 if __name__=='__main__':
     print "Costruzione catena di Markov del modello dato come progetto finale (modello di un sistema)\n"
 
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
     md=gsm.caricamentoModello("parametri.json")
+
+    # Calcolo le visite del modello prendendo come riferiemento la stazione 0(terminali collegati)
+    visite=calcoloVisite(md,indice_rif)
 
     for n in range(1,n+1):
         # Generazione dello spazio degli stati

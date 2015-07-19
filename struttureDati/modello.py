@@ -50,4 +50,11 @@ class Modello():
             self.stazioni[i].indici['U']=colU
             self.stazioni[i].indici['R']=colR
 
+    def salvaIndiciMark(self,nMedio,xMedio,wMedio,uMedio,rMedio):
+        for i in range(m):
+            self.stazioni[i].indiciMark['X']=xMedio[i]
+            self.stazioni[i].indiciMark['N']=nMedio[i]
+            self.stazioni[i].indiciMark['W']=wMedio[i]
+            self.stazioni[i].indiciMark['U']=uMedio[i]
+            self.stazioni[i].indiciMark['R']=rMedio[i]
 

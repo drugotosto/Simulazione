@@ -29,7 +29,7 @@ def settaggioProbStaz(md,piG,dim):
         # Per ogni stato ciclo sulle diverse posizioni/stazioni esaminando il n_persone al suo interno
         for j,val in enumerate(md.spazioStati[i][0]):
             if val!=0:
-                matPk[j][val]=+p
+                matPk[j][val]+=p
 
     # Settaggio elementi P[i][0] per ogni stazione
     for i in range(len(matPk)):
@@ -60,8 +60,26 @@ def calcoloIndici(md):
                     xMedio[j][i]+=(1.0/md.stazioni[j].s)*md.stazioni[j].prob[i][z]
                 elif md.stazioni[j].tipo=="infinite":
                     xMedio[j][i]+=(1.0/(md.stazioni[j].s/z))*md.stazioni[j].prob[i][z]
+                # Calcolo N
                 nMedio[j][i]+=z*md.stazioni[j].prob[i][z]
                 z+=1
+            # Calcolo W
+            wMedio[j][i]=nMedio[j][i]/xMedio[j][i]
+
+        # Calcolo R
+        # Ciclo su tutte le stazioni
+        for j in range(len(md.stazioni)):
+            rMedio[j][i]+=md.stazioni[j].visite*wMedio[j][i]
+            # Calcolo U
+            uMedio[j][i]=xMedio[j][i]*md.stazioni[j].s
+
 
     # STAMPA...
     print "nMEDIO:\n",nMedio
+    print "\nxMEDIO:\n",xMedio
+    print "\nwMEDIO:\n",wMedio
+    print "\nuMEDIO:\n",uMedio
+    print "\nrMEDIO:\n",rMedio
+
+    # Salvataggio dei vari indici di prestazione per le diverse stazioni all'interno del modello
+    md.salvaIndiciMark(nMedio,xMedio,wMedio,uMedio,rMedio)
