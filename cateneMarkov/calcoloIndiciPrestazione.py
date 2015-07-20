@@ -67,11 +67,17 @@ def calcoloIndici(md):
             wMedio[j][i]=nMedio[j][i]/xMedio[j][i]
 
         # Calcolo R
-        # Ciclo su tutte le stazioni
+        tot=0.0
+        # Ciclo su tutte le stazioni per calcolare tempo di ciclo
         for j in range(len(md.stazioni)):
-            rMedio[j][i]+=md.stazioni[j].visite*wMedio[j][i]
+            tot+=md.stazioni[j].visite*wMedio[j][i]
             # Calcolo U
             uMedio[j][i]=xMedio[j][i]*md.stazioni[j].s
+
+        # Calcolo Tempo di risposta per le varie stazioni
+        for j in range(len(md.stazioni)):
+            # Per tutte le stazioni non tengo conto del proprio tempo di permanenza con "n" persone dentro
+            rMedio[j][i]=tot-(wMedio[j][i]*md.stazioni[j].visite)
 
 
     # STAMPA...

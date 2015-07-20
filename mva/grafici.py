@@ -12,9 +12,9 @@ def graficiIndice(indici):
     y2=indici[2]
     y3=indici[3]
 
-    plt.title("Persone")
+    plt.title("R")
     plt.xlabel("#Utenti")
-    plt.ylabel("# medie Persone")
+    plt.ylabel("Tempo Medio Risposta")
     plt.plot(x,y0,"k",x,y1,"b",x,y2,"g",x,y3,"y")
 
     """plt.title("Stazione 2")

@@ -53,15 +53,12 @@ def ricorsioneN(md,n,xMedio,nMedio,wMedio,uMedio,rMedio):
 def calcoloTempoCiclo(n,md,wMedio,rMedio):
     tot=0.0
     for i in range(len(md.stazioni)):
-        if md.stazioni[i].tipo == "server":
-            tot+=md.stazioni[i].visite*wMedio[n][i]
-        else:
-            tot+=md.stazioni[i].visite*md.stazioni[i].s
+        tot+=md.stazioni[i].visite*wMedio[n][i]
+
     # Calcolo Tempo di risposta per le varie stazioni
     for i in range(len(md.stazioni)):
-        rMedio[n][i]=tot-(md.stazioni[0].s*md.stazioni[0].visite+md.stazioni[3].s*md.stazioni[3].visite)
-        if md.stazioni[i].tipo == "server":
-                rMedio[n][i]-=md.stazioni[i].s*md.stazioni[i].visite
+        # Per tutte le stazioni non tengo conto del proprio tempo di permanenza con "n" persone dentro
+        rMedio[n][i]=tot-(wMedio[n][i]*md.stazioni[i].visite)
     return tot
 
 
@@ -86,9 +83,9 @@ def test(md,n):
     # print("Somma N:",lista)
 
     # Stampa dei valori degi vari indici per tutte le stazioni
-    listaIndici=gsm.ritornaIndice(md,'R')
+    listaIndici=gsm.ritornaIndice(md,'N')
     for i in range(len(md.stazioni)):
-        print "La lista di indici R per la stazione ",i,": ",listaIndici[i]
+        print "La lista di indici N per la stazione ",i,": ",listaIndici[i]
 
 
 def calcoloProb(md):
