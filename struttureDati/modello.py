@@ -9,6 +9,7 @@ __author__ = 'maury'
 """
 
 from struttureDati.stazione import *
+from struttureDati.stazioneErlang import *
 from settaggi import m
 
 class Modello():
@@ -16,7 +17,10 @@ class Modello():
         self.stazioni=[]
         # Lista di dizioniari che verra trasormata in una lista di oggetti Stazione
         for staz in stazioni:
-            self.stazioni.append(Stazione(staz,n))
+            if(staz["tipo"]!="erlang"):
+                self.stazioni.append(Stazione(staz,n))
+            else:
+                self.stazioni.append(StazioneErlang(staz,n))
         self.q=q
 
     def setSpazio(self,spazioStati,n):

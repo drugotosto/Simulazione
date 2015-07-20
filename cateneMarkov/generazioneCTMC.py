@@ -4,14 +4,34 @@ import numpy as np
 from settaggi import m
 
 
-#
-def generaSpazioStati(n):
+# Generazione dello spazio degli stati valido anche in presenza di stazioni con distribuzione di Erlang
+def generaSpazioStati(md,n):
     # Prodotto Cartesiano di tutti i possibili elementi dati dall'array (0,1,2,3,...15)
     comb = list(itertools.product(range(0, n + 1), repeat=m))
     # Si sottraggono poi tutti questi elementi la cui somma non arriva ad un totale di n
     comb = [val for val in comb if sum(val) == n]
+    print "Spazio Originale:",comb,"\nlung:",len(comb)
+    # Recupero lista degli indici stazioni che sono di tipo erlang_k
+    ind_staz=[i for i,staz in enumerate(md.stazioni) if staz.tipo=="erlang"]
+    z=0
+    # Ciclo sulla lista degli spazi "originali" per sostituire quelli in cui la stazione con distribuzione ERLANG ha n>0
+    for i,stat in enumerate(comb):
+        for j in range(len(md.stazioni)):
+            # Controllo se lo stato nella posizione corrispondente "j" sia quella della stazione con distr. Erlang e se ha numero elementi >0
+            if (j in ind_staz)and(stat[j]>0):
+                if(i>=z):
+                    comb[i:i+1]=[]
+                    # Vado a sostituire lo stato (x,x,x,x) con la serie [(x,x,x,x),ind],[(x,x,x,x),ind] data dalla funzione
+                    z=generaStatiErlang(md,comb,i,stat,j)
     return comb
 
+# Sostituizione stato "originale" con stati erlanghiani...
+def generaStatiErlang(md,comb,i,stat,j):
+    statiIns=[(stat,z) for z in range(1,md.stazioni[j].k+1)]
+    for stato in statiIns:
+        comb.insert(i,stato)
+        i+=1
+    return i
 
 # Metodo per la creazione della matrice Q
 def creazioneMatriceQ(md):
