@@ -7,6 +7,8 @@ import numpy as np
 from settaggi import *
 from cateneMarkov import *
 from struttureDati import gestoreModello as gsm
+from struttureDati.stato import *
+from struttureDati.statoErlang import *
 from analisiOperazionale import calcoloVisite
 
 if __name__=='__main__':
@@ -14,6 +16,12 @@ if __name__=='__main__':
 
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
     md=gsm.caricamentoModello("parametri.json")
+
+    """st1=Stato((1,0,2,3))
+    print "Stato:",st1.stato,"tipo:",st1.tipo
+
+    st2=StatoErlang((2,4,1,4),[1,2],[3,5])
+    print "Stato:",st2.stato,"tipo:",st2.tipo,",ListaEr:",st2.listStazErl"""
 
     # Stampa delle stazioni
     # gsm.stampaStazioni(md)
@@ -26,6 +34,7 @@ if __name__=='__main__':
         spazio=generaSpazioStati(md,n)
 
         print "Spazio Erlang:",spazio,"\nnumero:",len(spazio),"\n"
+
 
         # Dizionario con indice numerico 0,1,2,... con valori tuple formate da: ((n,n,n,n),'(n,n,n,n)')
         # spazioStati={i:(stat,str(stat)) for i,stat in enumerate(spazio)}
