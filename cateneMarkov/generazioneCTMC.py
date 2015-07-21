@@ -27,7 +27,7 @@ def generaSpazioStati(md,n):
 
 # Sostituizione stato "originale" con stati erlanghiani...
 def generaStatiErlang(md,comb,i,stat,j):
-    statiIns=[(stat,z) for z in range(1,md.stazioni[j].k+1)]
+    statiIns=[(stat,z,"erlang") for z in range(1,md.stazioni[j].k+1)]
     for stato in statiIns:
         comb.insert(i,stato)
         i+=1
@@ -46,61 +46,124 @@ def creazioneMatriceQ(md):
     # - Eseguo la trasposta della matrice Q per passare da piGreco*Q=0 -> Q*piGreco=0 e setto la
     # condizione iniziale
 
-    # print "P:", md.q
+    #print "P:", md.q
 
     # Ciclo su tutto lo spazio degli stati
     for i, stato in md.spazioStati.items():
         # Per ogni stato ritorna i corrispondenti la lista degli stati in output
         statiOut=ricercaStatiUscita(stato, md)
 
-        print "La lista di stazioni con corrispondente valore da inserire nella matrice Q in output per lo stato", stato[0], "e:", statiOut
+        print "La lista di stazioni con corrispondente valore da inserire nella matrice Q in output per lo stato", stato, "e:", statiOut
 
         #metodo che ritorna una lista di stati destinatari associati allo stato di partenza con relative velocita
-        listStatVel=mappStatiVel(md,stato[0],statiOut)
+        # listStatVel=mappStatiVel(md,stato[0],statiOut)
 
-        print "Lo stato ha indice:",i ,"e la lista statVel:",listStatVel
+        # print "Lo stato ha indice:",i ,"e la lista statVel:",listStatVel
 
         # Costruzione di una riga alla volta per la matrice Q
-        costruzioneRigaQ(i,listStatVel,q)
+        # costruzioneRigaQ(i,listStatVel,q)
     return q
 
 
 # Per ogni stato di partenza in base alla matrice di transizione ritorna i corrispondenti stati in output
 def ricercaStatiUscita(stato, md):
-    print "\n\nPer lo stato: ", stato[0]
-    # Controllo il numero di persone presenti ad ogni stazione
     listaStat = []
-    for j, n in enumerate(stato[0]):
-        print "---Per la stazione: ", j
-        col = []
-        if n != 0:
-            # Recupero tutti gli indici delle colonne per cui la matrice di P ha un valore !=0 (senza tener conto del ciclo 1->1)
-            col = [i for i, val in enumerate(md.q[j]) if val != 0.0 and i != j]
-            print "Da stato :", j, " a stato", col
+    # Se lo stato non presenta nessuna persona ad una delle stazioni con distribuzione Erlang... (CASO NORMALE)
+    if stato[-1]!="erlang":
+        print "\n\nPer lo stato: ", stato
+        # Controllo il numero di persone presenti ad ogni stazione
+        for j, n in enumerate(stato):
+            print "---Per la stazione: ", j
+            col=[]
+            if n != 0:
+                # Recupero tutti gli indici delle colonne per cui la matrice di P ha un valore !=0 (senza tener conto del ciclo 1->1)
+                col = [i for i, val in enumerate(md.q[j]) if val != 0.0 and i != j]
+                print "Da stato :", j, " a stato", col
 
-        # Costruisco i relativi stati in output per ogni possibile partenza dalle varie stazioni
-        listaStazOut = [[]]
-        valQ=0.0
-        for i, val in enumerate(col):
-            stazOut = list(stato[0])
-            stazOut[j] = stazOut[j] - 1
-            stazOut[val] = stazOut[val] + 1
+            # Costruisco i relativi stati in output per ogni possibile partenza dalle varie stazioni
+            listaStazOut = [[]]
+            valQ=0.0
+            for i, val in enumerate(col):
+                stazOut = list(stato)
+                stazOut[j] = stazOut[j] - 1
+                stazOut[val] = stazOut[val] + 1
 
-            #Calcolo del corrispondente valore da inserire successivamente nella matrice Q
-            # j: indice stazione di partenza
-            # val: indice stazione arrivo
-            if  md.stazioni[j].tipo=="server":
-                valQ=(1.0/md.stazioni[j].s)*md.q[j][val]
+                #Calcolo del corrispondente valore da inserire successivamente nella matrice Q
+                # j: indice stazione di partenza
+                # val: indice stazione arrivo
+                if  md.stazioni[j].tipo=="server":
+                    valQ=(1.0/md.stazioni[j].s)*md.q[j][val]
 
-            elif md.stazioni[j].tipo=="infinite":
-                valQ=(1.0/(md.stazioni[j].s/float(stato[0][j])))*md.q[j][val]
+                elif md.stazioni[j].tipo=="infinite":
+                    valQ=(1.0/(md.stazioni[j].s/float(stato[j])))*md.q[j][val]
 
-            mapStatoVal=(stazOut,valQ)
-            listaStazOut.append(mapStatoVal)
+                mapStatoVal=(stazOut,valQ)
+                listaStazOut.append(mapStatoVal)
 
-        listaStat.extend((listaStazOut))
-        # Rimozione celle vuote
-        listaStat=[x for x in listaStat if x != []]
+            listaStat.extend((listaStazOut))
+            # Rimozione celle vuote
+            listaStat=[x for x in listaStat if x != []]
+    # CASO CON ERLANG....
+    else:
+        print "\n\nPer lo stato: ", stato[0]
+        print "ERLANG:",stato[1]
+
+        # Controllo il numero di persone presenti ad ogni stazione
+        for j, n in enumerate(stato[0]):
+            listaStazOut = [[]]
+            # Se stiamo considerando una uscita da una stazione non Erlanghiana o con 1 persona e siamo all'ultimo stadio -> CASO NORMALE
+            if j!=1 or ((stato[1]==1)and(stato[0][j]==1)):
+                print "---Per la stazione: ", j
+                col=[]
+                if n != 0:
+                    # Recupero tutti gli indici delle colonne per cui la matrice di P ha un valore !=0 (senza tener conto del ciclo 1->1)
+                    col = [i for i, val in enumerate(md.q[j]) if val != 0.0 and i != j]
+                    print "Da stato :", j, " a stato", col
+
+                # Costruisco i relativi stati in output per ogni possibile partenza dalle varie stazioni
+                valQ=0.0
+                for i, val in enumerate(col):
+                    # Caso di passaggio da stazione Erlang con 1 sola persona (Si ritorna agli stati "normali")
+                    stazOut = list(stato[0])
+                    stazOut[j] = stazOut[j] - 1
+                    stazOut[val] = stazOut[val] + 1
+                    # Caso in cui si aggiunge una persona alla stazione Erlang passando da stazione non Erlang
+                    if(val==1 and j!=1):
+                        stazOut=(stazOut,stato[1],"erlang")
+
+                    #Calcolo del corrispondente valore da inserire successivamente nella matrice Q
+                    # j: indice stazione di partenza
+                    # val: indice stazione arrivo
+                    if  md.stazioni[j].tipo=="server":
+                        valQ=(1.0/md.stazioni[j].s)*md.q[j][val]
+
+                    elif md.stazioni[j].tipo=="infinite":
+                        valQ=(1.0/(md.stazioni[j].s/float(stato[0][j])))*md.q[j][val]
+
+                    elif md.stazioni[j].tipo=="erlang":
+                        valQ=(1.0/(md.stazioni[j].s/md.stazioni[j].k))*md.q[j][val]
+
+                    mapStatoVal=(stazOut,valQ)
+                    listaStazOut.append(mapStatoVal)
+
+            # Caso in cui ce piu di una persona nella stazione Erlanghiana
+            else:
+                print "---Per la stazione: ", j
+                col=[j]
+                print "Da stato :", j, " a stato", col,"Erlang"
+
+                """ Da implementare parte relativa al caso in cui si verifica una uscita dalla stazione
+                    Erlang che presenta nuemro elementi >0. Si andra ad uno stato con stessi numero elementi ma k-1"""
+
+                # Costruisco i relativi stati in output per ogni possibile partenza dalle varie stazioni
+
+                stazOut=(stato[0],stato[1]-1,"erlang")
+                valQ=1.0/(md.stazioni[j].s/md.stazioni[j].k)
+
+                mapStatoVal=(stazOut,valQ)
+                listaStazOut.append(mapStatoVal)
+
+            listaStat.extend((listaStazOut))
     return listaStat
 
 
