@@ -3,13 +3,10 @@ __author__ = 'maury'
 """
     MAIN PRINCIPALE
 """
-import numpy as np
 from settaggi import *
 from cateneMarkov import *
 from struttureDati import gestoreModello as gsm
-from struttureDati.stato import *
-from struttureDati.statoErlang import *
-from analisiOperazionale import calcoloVisite
+from analisiOperazionale import *
 
 if __name__=='__main__':
     print "Costruzione catena di Markov del modello dato come progetto finale (modello di un sistema)\n"

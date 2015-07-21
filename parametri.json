@@ -18,7 +18,8 @@
       "id": 2,
       "nome": "I/O",
       "s": 0.5,
-      "tipo": "server"
+      "tipo": "erlang",
+      "k":2
     },
     {
       "id": 3,
