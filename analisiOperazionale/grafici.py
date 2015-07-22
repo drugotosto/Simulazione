@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # Creazione grafico dell' asintoto orizzontale e obliquo per X
 def graficoAsintotico(dMax,som_domande,md):
-    x=np.arange(0,100,1)
+    x=np.arange(0,100)
     y1=np.zeros(100)
     y1+=1/dMax
     y2=(1/som_domande)*x
@@ -18,14 +18,14 @@ def graficoAsintotico(dMax,som_domande,md):
     plt.annotate("Inizio code",xy=(p1x,p1y),xytext=(p1x+1,p1y+0.5),arrowprops=dict(facecolor='black', shrink=0.05))
 
     plt.subplot(212)
-    x=np.arange(0,100,1)
+    x=np.arange(0,100)
     y1=np.zeros(100)
     y1+=som_domande
-    # Dalla somma delle domande non considero sia la stazione dei terminali che quella di riposo
-    y1=y1-(md.stazioni[0].s*md.stazioni[0].visite+md.stazioni[3].s*md.stazioni[3].visite+md.stazioni[2].s*md.stazioni[2].visite)
-    # Non considero sia la stazione dei terminali che quella di riposo
-    y2=dMax*x-(md.stazioni[0].s*md.stazioni[0].visite+md.stazioni[3].s*md.stazioni[3].visite)
-    y3=(md.stazioni[1].s*md.stazioni[1].visite)*x-(md.stazioni[0].s*md.stazioni[0].visite+md.stazioni[3].s*md.stazioni[3].visite+md.stazioni[2].s*md.stazioni[2].visite)
+    # Dalla somma delle domande non considero la stazione dei terminali stessa
+    y1=y1-(md.stazioni[0].s*md.stazioni[0].visite)
+    # Non considero la stazione dei terminali
+    y2=dMax*x-(md.stazioni[0].s*md.stazioni[0].visite)
+    y3=(md.stazioni[1].s*md.stazioni[1].visite)*x-(md.stazioni[0].s*md.stazioni[0].visite)
 
     plt.xlabel("#Utenti")
     plt.ylabel("Tempo di risposta")

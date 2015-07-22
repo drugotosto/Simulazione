@@ -27,21 +27,21 @@ if __name__=='__main__':
     visite=calcoloVisite(md,indice_rif)
 
     for n in range(1,n+1):
+        print "\n\nCASO N=",n,"*********************************"
         # Generazione dello spazio degli stati
         spazio=generaSpazioStati(md,n)
 
-        print "Spazio Erlang:",spazio,"\nnumero:",len(spazio),"\n"
+        print "Spazio Erlang:",spazio,"\nnumero:",len(spazio)
+
+        # Dizionario con  K=0,1,2,... V="Stato/StatoErlang"
+        spazioStati={i:stat for i,stat in enumerate(spazio)}
+
+        # Aggiunta dello spazio degli stati al modello
+        gsm.aggiungiSpazio(md,spazioStati,n)
 
 
-        # Dizionario con indice numerico 0,1,2,... con valori tuple formate da: ((n,n,n,n),'(n,n,n,n)')
-        # spazioStati={i:(stat,str(stat)) for i,stat in enumerate(spazio)}
-
-          # Aggiunta dello spazio degli stati al modello
-        # gsm.aggiungiSpazio(md,spazioStati,n)
-
-        # print "\n\nCASO N=",n,"*********************************"
-        # print "Spazio deglis stati:",md.spazioStati
-        # print "Lunghezza Spazio degli stati: ",len(md.spazioStati)
+        print "Spazio deglis stati:",md.spazioStati
+        print "Lunghezza Spazio degli stati: ",len(md.spazioStati)
 
         # Chiamata per la creazione della matrice Q
         # q=creazioneMatriceQ(md)

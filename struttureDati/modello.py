@@ -7,9 +7,7 @@ __author__ = 'maury'
     - spazioStati: spazio degli stati totale con "n" persone all'interno del sistema
     - n: numero persone totali all'interno del sistema
 """
-
-from struttureDati.stazione import *
-from struttureDati.stazioneErlang import *
+from struttureDati.stazione import Stazione,StazioneErlang
 from settaggi import m
 
 class Modello():
