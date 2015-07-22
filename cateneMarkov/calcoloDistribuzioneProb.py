@@ -66,16 +66,16 @@ def ricercaStatiUscita(stato, md):
                         elif md.stazioni[j].tipo=="infinite":
                             valQ=(1.0/(md.stazioni[j].s/float(stato.stato[j])))*md.q[j][val]
 
-                        # CASO IN CUI SI FINISCE IN UNO STATO NORMALE
+                        # CASO IN CUI SI FINISCE IN UNA STAZIONE SERVER/INFINITE NORMALE
                         if md.stazioni[val].tipo!="erlang":
-                            print "Si finisce in uno stato normale"
+                            print "Si finisce in una stazione Server/Infinite"
                             """Funzione per andare alla ricerca dell'oggetto Stato che contiene lo stato=stazOut"""
                             mapStatoVal=[ricercaOggettoStato(md,tuple(stazOut),"normale"),valQ]
                             print "Lo stato out e:",md.spazioStati[mapStatoVal[0]].stato
 
-                        # CASO IN CUI SI FINISCE IN UNO STATO ERLANG
+                        # CASO IN CUI SI FINISCE IN UNA STAZIONE ERLANG
                         else:
-                            print "Si finisce in uno stato Erlang"
+                            print "Si finisce in una stazione Erlang"
                             """Funzione per andare alla ricerca dell'oggetto Stato che contiene lo stato=stazOut"""
                             mapStatoVal=[ricercaOggettoStato(md,tuple(stazOut),"erlang",3),valQ]
                             print "Lo stato out e:",md.spazioStati[mapStatoVal[0]].stato,",listStazErl:",md.spazioStati[mapStatoVal[0]].listStazErl
@@ -90,6 +90,7 @@ def ricercaStatiUscita(stato, md):
         for j,n in enumerate(stato.stato):
             print "---Per la stazione: ", j
             mapStatoVal=[]
+            col = []
             if n!=0:
                 # PARTENZA da una stazione erlang con S>1 e quindi tocca scalare..
                 if (md.stazioni[j].tipo=="erlang")and(stato.listStazErl[0]['stadK']>1):
@@ -105,6 +106,33 @@ def ricercaStatiUscita(stato, md):
                 # PARTENZA da una stazione non Erlang
                 elif md.stazioni[j].tipo!="erlang":
                     print "Sono nello stato:",stato.listStazErl,"partenza da una stazione non Erlang (caso normale)"
+
+                    # Recupero tutti gli indici delle colonne per cui la matrice di P ha un valore !=0 (senza tener conto del ciclo 1->1)
+                    col = [i for i, val in enumerate(md.q[j]) if val != 0.0 and i != j]
+                    print "Da stazione :", j, " a stazione", col
+
+                    for val in col:
+                        # Costruisco i relativi stati in output per ogni possibile partenza dalle varie stazioni
+                        valQ=0.0
+                        for i,val in enumerate(col):
+                            stazOut=list(stato.stato)
+                            stazOut[j]=stazOut[j]-1
+                            stazOut[val]=stazOut[val]+1
+
+                            #Calcolo del corrispondente valore da inserire successivamente nella matrice Q
+                            # j: indice stazione di partenza
+                            # val: indice stazione arrivo
+                            if  md.stazioni[j].tipo=="server":
+                                valQ=(1.0/md.stazioni[j].s)*md.q[j][val]
+
+                            elif md.stazioni[j].tipo=="infinite":
+                                valQ=(1.0/(md.stazioni[j].s/float(stato.stato[j])))*md.q[j][val]
+
+                            # UGUALE SE SI FINISCE IN UNA STAZIONE SERVER/INFINITE o ERLANG
+                            print "Si finisce in una stazione Server/Infinite"
+                            """Funzione per andare alla ricerca dell'oggetto Stato che contiene lo stato=stazOut"""
+                            mapStatoVal=[ricercaOggettoStato(md,tuple(stazOut),"erlang",stato.listStazErl[0]['stadK']),valQ]
+                            print "Lo stato out e:",md.spazioStati[mapStatoVal[0]].stato,",listStazErl:",md.spazioStati[mapStatoVal[0]].listStazErl
 
                 listaStat.append(mapStatoVal)
                 # Rimozione celle vuote
@@ -124,6 +152,12 @@ def ricercaOggettoStato(md,stazOut,tipo,k=0):
         else:
             if (stato.stato==stazOut)and(stato.tipo==tipo):
                 return i
+
+
+"""
+DA QUI IN POI UGUALE A MASTER
+"""
+
 
 def mappStatiVel(md,stato,statiOut):
     # Ricerco riga della matrice Q su cui andare a settare i valori
