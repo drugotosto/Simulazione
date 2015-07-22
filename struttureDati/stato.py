@@ -12,6 +12,7 @@ class Stato():
         self.tipo=tipo
 
 
+
 """
     Classe che mi rappresenta ogni singolo stato "ERLANG" della catena di MARKOV
     - stato: tupla che mi descrive lo stato specifico di base
@@ -28,3 +29,4 @@ class StatoErlang(Stato):
     def __init__(self,stato,staz=[],valK=[]):
         Stato.__init__(self,stato,'erlang')
         self.listStazErl=[{'indStaz':k,'stadK':v} for (k,v) in zip(staz,valK)]
+

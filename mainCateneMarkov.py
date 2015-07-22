@@ -39,12 +39,11 @@ if __name__=='__main__':
         # Aggiunta dello spazio degli stati al modello
         gsm.aggiungiSpazio(md,spazioStati,n)
 
-
         print "Spazio deglis stati:",md.spazioStati
         print "Lunghezza Spazio degli stati: ",len(md.spazioStati)
 
         # Chiamata per la creazione della matrice Q
-        # q=creazioneMatriceQ(md)
+        q=creazioneMatriceQ(md)
 
         # print "\nLA MATRICE Q risulta essere:\n",q
 

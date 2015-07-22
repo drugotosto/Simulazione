@@ -37,4 +37,5 @@ class Stazione():
 class StazioneErlang(Stazione):
     def __init__(self,stazione,n):
         Stazione.__init__(self,stazione,n)
+        self.tipo="erlang"
         self.k=stazione["k"]
