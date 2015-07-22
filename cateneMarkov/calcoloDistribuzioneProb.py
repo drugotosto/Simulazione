@@ -40,21 +40,22 @@ def ricercaStatiUscita(stato, md):
     listaStat = []
     # Lo stato preso in considerazione risulta essere "normale"
     if stato.tipo=="normale":
-        for j, n in enumerate(stato.stato):
+        for j,n in enumerate(stato.stato):
             print "---Per la stazione: ", j
+            mapStatoVal=[]
             col = []
             if n != 0:
                 # Recupero tutti gli indici delle colonne per cui la matrice di P ha un valore !=0 (senza tener conto del ciclo 1->1)
                 col = [i for i, val in enumerate(md.q[j]) if val != 0.0 and i != j]
-                print "Da stato :", j, " a stato", col
+                print "Da stazione :", j, " a stazione", col
 
                 for val in col:
                     # Costruisco i relativi stati in output per ogni possibile partenza dalle varie stazioni
                     valQ=0.0
-                    for i, val in enumerate(col):
-                        stazOut = list(stato.stato)
-                        stazOut[j] = stazOut[j] - 1
-                        stazOut[val] = stazOut[val] + 1
+                    for i,val in enumerate(col):
+                        stazOut=list(stato.stato)
+                        stazOut[j]=stazOut[j]-1
+                        stazOut[val]=stazOut[val]+1
 
                         #Calcolo del corrispondente valore da inserire successivamente nella matrice Q
                         # j: indice stazione di partenza
@@ -69,24 +70,46 @@ def ricercaStatiUscita(stato, md):
                         if md.stazioni[val].tipo!="erlang":
                             print "Si finisce in uno stato normale"
                             """Funzione per andare alla ricerca dell'oggetto Stato che contiene lo stato=stazOut"""
-                            mapStatoVal=(ricercaOggettoStato(md,tuple(stazOut),"normale"),valQ)
+                            mapStatoVal=[ricercaOggettoStato(md,tuple(stazOut),"normale"),valQ]
                             print "Lo stato out e:",md.spazioStati[mapStatoVal[0]].stato
 
                         # CASO IN CUI SI FINISCE IN UNO STATO ERLANG
                         else:
                             print "Si finisce in uno stato Erlang"
                             """Funzione per andare alla ricerca dell'oggetto Stato che contiene lo stato=stazOut"""
-                            mapStatoVal=(ricercaOggettoStato(md,tuple(stazOut),"erlang",3),valQ)
+                            mapStatoVal=[ricercaOggettoStato(md,tuple(stazOut),"erlang",3),valQ]
                             print "Lo stato out e:",md.spazioStati[mapStatoVal[0]].stato,",listStazErl:",md.spazioStati[mapStatoVal[0]].listStazErl
 
                         listaStat.append(mapStatoVal)
                         # Rimozione celle vuote
+                        mapStatoVal=[x for x in listaStat if x != []]
                         listaStat=[x for x in listaStat if x != []]
 
     # Lo stato preso in considerazione risulta essere "Erlang"
     else:
-        print "Lo stato preso in considerazione e di Erlang"
+        for j,n in enumerate(stato.stato):
+            print "---Per la stazione: ", j
+            mapStatoVal=[]
+            if n!=0:
+                # PARTENZA da una stazione erlang con S>1 e quindi tocca scalare..
+                if (md.stazioni[j].tipo=="erlang")and(stato.listStazErl[0]['stadK']>1):
+                    print "Sono nello stato:",stato.listStazErl,"basta scalare"
+                    valQ=(1.0/(md.stazioni[j].s/md.stazioni[stato.listStazErl[0]['indStaz']].k))
 
+                    mapStatoVal=[ricercaOggettoStato(md,tuple(stato.stato),"erlang",stato.listStazErl[0]['stadK']-1),valQ]
+                    print "Lo stato out e:",md.spazioStati[mapStatoVal[0]].stato,",listStazErl:",md.spazioStati[mapStatoVal[0]].listStazErl
+                # PARTENZA da una stazione erlang con S==1 e quindi tocca cercare nuovi stati
+                elif (md.stazioni[j].tipo=="erlang")and(stato.listStazErl[0]['stadK']==1):
+                    print "Sono nello stato:",stato.listStazErl,"devo andare a scoprire in quale nuovo stato finiro!"
+
+                # PARTENZA da una stazione non Erlang
+                elif md.stazioni[j].tipo!="erlang":
+                    print "Sono nello stato:",stato.listStazErl,"partenza da una stazione non Erlang (caso normale)"
+
+                listaStat.append(mapStatoVal)
+                # Rimozione celle vuote
+                mapStatoVal=[x for x in listaStat if x != []]
+                listaStat=[x for x in listaStat if x != []]
 
     return listaStat
 
