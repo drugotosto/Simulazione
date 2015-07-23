@@ -45,16 +45,16 @@ if __name__=='__main__':
         # Chiamata per la creazione della matrice Q
         q=creazioneMatriceQ(md)
 
-        # print "\nLA MATRICE Q risulta essere:\n",q
+        print "\nLA MATRICE Q risulta essere:\n",q
+        print "La somma per righe e:",map(sum,q),"\nlunghezza",len(q)
 
         # Chiamata per la risoluzione del sistema
-        # piG=risoluzioneSistema(q)
+        piG=risoluzioneSistema(q)
 
-        # print "\nLa distribuzione di prob dei vari stati risulta essere: \n",piG,"\ndi lunghezza:",len(piG),"con somma di:",sum(piG),"\n"
+        print "\nLa distribuzione di prob dei vari stati risulta essere: \n",piG,"\ndi lunghezza:",len(piG),"con somma di:",sum(piG),"\n"
 
         # Settaggio delle varie P(k,n) per le diverse stazioni al variare del num. persone nel sistema
         # preparazioneCalcoloIndici(md,piG,n)
-
 
     # Calcolo degli indici veri e propri
     # calcoloIndici(md)

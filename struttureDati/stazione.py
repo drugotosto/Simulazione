@@ -26,9 +26,6 @@ class Stazione():
         self.prob=dict.fromkeys(range(n+1),np.float64(0))
         self.indiciMark={'X':np.zeros(n),'W':np.zeros(n),'N':np.zeros(n),'U':np.zeros(n),'R':np.zeros(n)}
 
-    def __getattr__(self, item):
-        return 0
-
 """
     Classe che mi rappresenta le stazioni di tipo Erlang_k (sottoclasse della classe Stazione)
     - k: parametro della distribuzione Erlang associata alla stazione

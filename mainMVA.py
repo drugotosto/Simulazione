@@ -26,5 +26,5 @@ if __name__=='__main__':
     calcoloIndiciPrestazione(md)
 
     # Stampa dei grafici (settare opportunamente l'indice scelto)
-    indici=gsm.ritornaIndice(md,'R')
+    indici=gsm.ritornaIndice(md,'U')
     graficiIndice(indici)

@@ -11,8 +11,6 @@ class Stato():
         self.stato=stato
         self.tipo=tipo
 
-
-
 """
     Classe che mi rappresenta ogni singolo stato "ERLANG" della catena di MARKOV
     - stato: tupla che mi descrive lo stato specifico di base
