@@ -8,7 +8,7 @@ __author__ = 'maury'
 indice_rif=0
 
 # Numero Persone totali nel sistema
-n=3
+n=10
 
 # Numero Delle stazioni
 m=4

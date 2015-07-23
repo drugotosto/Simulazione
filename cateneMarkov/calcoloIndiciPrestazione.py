@@ -25,9 +25,12 @@ def settaggioProbStaz(md,piG,dim):
     matPk=np.zeros((m,dim))
 
     for i,p in enumerate(piG):
-        print "Valore di prob:",p,"corrispondente allo stato:",md.spazioStati[i][0]
+        if md.spazioStati[i].tipo!="erlang":
+            print "Valore di prob:",p,"corrispondente allo stato:",md.spazioStati[i].stato
+        else:
+            print "Valore di prob:",p,"corrispondente allo stato:",md.spazioStati[i].stato,"listStazErl:",md.spazioStati[i].listStazErl
         # Per ogni stato ciclo sulle diverse posizioni/stazioni esaminando il n_persone al suo interno
-        for j,val in enumerate(md.spazioStati[i][0]):
+        for j,val in enumerate(md.spazioStati[i].stato):
             if val!=0:
                 matPk[j][val]+=p
 
@@ -55,9 +58,11 @@ def calcoloIndici(md):
         for j in range(len(md.stazioni)):
             z=1.0
             while z<=i:
-                if  md.stazioni[j].tipo=="server":
+                if md.stazioni[j].tipo=="server":
                     # Calcolo X
                     xMedio[j][i]+=(1.0/md.stazioni[j].s)*md.stazioni[j].prob[i][z]
+                elif md.stazioni[j].tipo=="erlang":
+                    xMedio[j][i]+=(1.0/(md.stazioni[j].s/md.stazioni[j].k))*md.stazioni[j].prob[i][z]
                 elif md.stazioni[j].tipo=="infinite":
                     xMedio[j][i]+=(1.0/(md.stazioni[j].s/z))*md.stazioni[j].prob[i][z]
                 # Calcolo N

@@ -54,9 +54,9 @@ if __name__=='__main__':
         print "\nLa distribuzione di prob dei vari stati risulta essere: \n",piG,"\ndi lunghezza:",len(piG),"con somma di:",sum(piG),"\n"
 
         # Settaggio delle varie P(k,n) per le diverse stazioni al variare del num. persone nel sistema
-        # preparazioneCalcoloIndici(md,piG,n)
+        preparazioneCalcoloIndici(md,piG,n)
 
     # Calcolo degli indici veri e propri
-    # calcoloIndici(md)
+    calcoloIndici(md)
 
 
