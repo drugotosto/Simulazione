@@ -4,26 +4,37 @@
     {
       "id": 0,
       "nome": "terminali",
-      "s": 2.0,
+      "z": 2.0,
       "tipo": "infinite"
     },
     {
       "id": 1,
       "nome": "cpu",
-      "s": 0.03,
       "tipo": "server",
-      "k":3
+      "distr":
+      [
+        {
+          "tipo": "exponential",
+          "s": 0.03
+        }
+      ]
     },
     {
       "id": 2,
       "nome": "I/O",
-      "s": 0.5,
-      "tipo": "server"
+      "tipo": "server",
+      "distr":
+      [
+        {
+          "tipo": "exponential",
+          "s": 0.5
+        }
+      ]
     },
     {
       "id": 3,
       "nome": "Riposo",
-      "s": 200.0,
+      "z": 200.0,
       "tipo": "infinite"
     }
   ],

@@ -9,7 +9,7 @@ if __name__=='__main__':
 
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
     md=gsm.caricamentoModello("parametri.json")
-     # Calcolo le visite del modello prendendo come riferiemento la stazione 0(terminali collegati)
+    # Calcolo le visite del modello prendendo come riferiemento la stazione 0(terminali collegati)
     calcoloVisite(md,indice_rif)
 
     # Calcolo delle varie domande alle varie stazioni
@@ -26,5 +26,5 @@ if __name__=='__main__':
     calcoloIndiciPrestazione(md)
 
     # Stampa dei grafici (settare opportunamente l'indice scelto)
-    indici=gsm.ritornaIndice(md,'U')
+    indici=gsm.ritornaIndice(md,'X')
     graficiIndice(indici)
