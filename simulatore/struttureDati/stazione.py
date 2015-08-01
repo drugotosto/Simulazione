@@ -11,8 +11,9 @@ __author__ = 'maury'
     - coda dei job alla stazione
     - indici di prestazione (X,W,N,U)
 """
+from classTools import Display
 
-class Stazione():
+class Stazione(Display):
     def __init__(self,stazione):
         self.__dict__.update(stazione)
         self.Njobs=0

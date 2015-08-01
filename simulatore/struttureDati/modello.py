@@ -1,7 +1,10 @@
 __author__ = 'maury'
-
+"""
+    Classe che preso in input il file json passato in input crea una lista di
+    oggetti Stazione e memorizza la matrice di transione tra stazioni.
+"""
 import json
-from simulatore.struttureDati.stazione import *
+from simulatore.struttureDati.stazione import Stazione
 
 class Modello():
     def __init__(self,path):
@@ -15,5 +18,5 @@ class Modello():
 
     def stampaStazioni(self):
         for staz in  self.stazioni:
-            print "Stazione ",staz.id,": ",vars(staz)
+            print "Stazione ",staz.id,": ",staz
 

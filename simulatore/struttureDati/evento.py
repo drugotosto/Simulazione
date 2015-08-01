@@ -1,7 +1,11 @@
 __author__ = 'maury'
 
-class Evento():
-    numEv=1
+from classTools import Display
+from itertools import count
+
+class Evento(Display,object):
+    _ids=count(0)
+
     def __init__(self,genT,serT,occT,tipo,idJob,idStaz):
         self.genT=genT
         self.serT=serT
@@ -9,32 +13,23 @@ class Evento():
         self.tipo=tipo
         self.idJob=idJob
         self.idStaz=idStaz
-        self.idEv=Evento.numEv
-        Evento.numEv+=1
+        self.idEv=self._ids.next()
 
     def __cmp__(self, other):
-        return cmp(self.occ,other.occ)
-
-    # Forma di stampa personalizzata che recupera anche gli attributi delle classi(con annessa ereditarieta)
-    def __repr__(self):
-        chiavi=[nome for nome in dir(self) if not nome.startswith('__')]
-        valori=[]
-        for ch in chiavi:
-            valori.append(getattr(self,ch))
-        return str(dict(zip(chiavi,valori)))
-
+        return cmp(self.occT,other.occT)
 
 
 if __name__ == '__main__':
-    ev1=Evento(1,0,'transizione',3.56)
-    ev2=Evento(1,3,'transizione',2.70)
+    ev1=Evento(0.0,3.0,"null","coda",1,0)
+    ev2=Evento(0.0,4.0,4.0,"partenza",2,0)
+    ev3=Evento(1.0,2.0,"null","coda",3,0)
 
-    if(ev1>ev2):
-        print "L'evento 1 accade dopo l'evento 2"
+    if(ev1<ev2):
+        print "L'evento 1 accade prima dell'evento 2"
     else:
-        print "L'evento 2 accade dopo l'evento 1"
+        print "L'evento 2 accade prima l'evento 1"
 
-    print "STAMPA:",ev1
+    print "STAMPA Ev1:",ev1
     """
        Without arguments, return the list of names in the current local scope.
        With an argument, attempt to return a list of valid attributes for that object
@@ -47,3 +42,6 @@ if __name__ == '__main__':
        Non vengono stampati gli attributi ereditati dalle classi.
     """
     print "VARS:",vars(ev1)
+
+    print "STAMPA Ev2:",ev2
+    print "STAMPA Ev2:",ev3

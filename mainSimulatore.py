@@ -1,7 +1,7 @@
 __author__ = 'maury'
 
-from simulatore.struttureDati.modello import *
-from simulatore.simulatore import *
+from simulatore.struttureDati.modello import Modello
+from simulatore.simulatore import Simulatore
 
 if __name__ == '__main__':
 
@@ -17,4 +17,3 @@ if __name__ == '__main__':
     sim.engine()
     # Resoconto degli indici per le diverse stazioni
     sim.report()
-
