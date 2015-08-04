@@ -15,6 +15,7 @@ from classTools import Display
 
 class Stazione(Display):
     def __init__(self,stazione):
+        self.distr=[]
         self.__dict__.update(stazione)
         self.Njobs=0
         self.busyT=0.0
