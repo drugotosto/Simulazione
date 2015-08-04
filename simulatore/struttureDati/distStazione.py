@@ -42,9 +42,9 @@ class DistStazione():
 
     # Stampa delle diverse distribuzioni che formano il tempo di servizio di una stazione (self)
     def stampaDistr(self):
-        print "Lista di distribuzioni che formano il tempo di servizio della stazione:"
-        for i,distr in enumerate(self.distribuzioni):
-            print "Distribuzione",i+1,":",distr.info
+        print "\nLista di distribuzioni che formano il tempo di servizio della stazione:"
+        for distr in self.distribuzioni:
+            print "Distribuzione:",distr.info
 
 class Distribuzione():
     """

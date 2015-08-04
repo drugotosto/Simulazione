@@ -22,6 +22,7 @@ class Stazione(Display):
         self.area=0.0
         self.arrivi=0
         self.partenze=0
+        self.nMax=0
         self.coda=[]
         self.indici={'X':0.0,'W':0.0,'N':0.0,'U':0.0}
 

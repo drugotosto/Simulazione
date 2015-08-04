@@ -20,3 +20,4 @@ class Modello():
         for staz in  self.stazioni:
             print "Stazione ",staz.id,": ",staz
 
+
