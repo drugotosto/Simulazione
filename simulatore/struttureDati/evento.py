@@ -3,8 +3,9 @@ __author__ = 'maury'
 from classTools import Display
 from itertools import count
 
+
 class Evento(Display,object):
-    _ids=count(0)
+    _ids=count(1)
 
     def __init__(self,genT,serT,occT,tipo,idJob,idStaz):
         self.genT=genT

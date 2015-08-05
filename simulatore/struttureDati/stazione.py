@@ -15,6 +15,11 @@ from classTools import Display
 
 class Stazione(Display):
     def __init__(self,stazione):
+        """
+        Costruttore della stazione
+        :param stazione: Dizionario che rappresenta la stazione
+        :type stazione: dict
+        """
         self.distr=[]
         self.__dict__.update(stazione)
         self.Njobs=0

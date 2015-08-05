@@ -8,6 +8,11 @@ from simulatore.struttureDati.stazione import Stazione
 
 class Modello():
     def __init__(self,path):
+        """
+        Costruttore del Modello dato in input attraverso il file json
+        :param path: Percorso del file json dal quale recuperare i dati
+        :type path: file
+        """
         with open(path) as file:
             model = json.loads(file.read())
         self.stazioni=[]

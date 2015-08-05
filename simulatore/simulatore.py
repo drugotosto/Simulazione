@@ -7,12 +7,21 @@ __author__ = 'maury'
     - time: orologio del simulatore
     - md: modello del sistema reale che il simulatore prendera in considerazione
 """
+from tools import *
 from gestoreEventi import *
-from simulatore.struttureDati.evento import Evento
-from struttureDati.distStazione import DistStazione
+from struttureDati.evento import Evento
+from struttureDati.distStazione import DistStazione,genDistrMisura
+from struttureDati.modello import Modello
+
 
 class Simulatore():
     def __init__(self,md,seme):
+        """
+        Costruttore del Simulatore che recupera il modello e il seme con cui inizializzare il generatore di numeri causuali
+        :param md: Modello preso in considerazione dal file json
+        :type md: Modello
+        :param seme: seme iniziale con il quale inizializzare il generatore di num. casuali
+        """
         self.eventList=[]
         self.freeList=[]
         self.time=0.0
@@ -21,23 +30,42 @@ class Simulatore():
         for staz in md.stazioni:
             self.listDistrStaz.append(DistStazione(staz,seme))
 
-    # Schedula un job nella future event list in uscita dalla stazione 0 pi tot job in coda alla stazione 0
     def inizialization(self,nj):
+        """
+        Schedula un job nella future event list in uscita dalla stazione "0" piu "tot" job in coda alla stazione 0
+        :param nj: numero di job da inserire in coda alla stazione 0
+        """
         # Genero una istanza del tempo di servizio della stazione 0
         servT=self.listDistrStaz[0].genDistr()
         # Schedulo una partenza dalla stazione 0
-        schedula(self.eventList,Evento(0.0,servT,servT,"partenza",1,0))
+        schedula(self.eventList,Evento(self.time,servT,servT,"partenza",1,0))
+        # Schedulo un arrivo alla stazione 1
+        schedula(self.eventList,Evento(self.time,-1,servT,"arrivo",1,1))
         for i in range(2,nj+2):
             # Genero una istanza del tempo di servizio della stazione 0
             servT=self.listDistrStaz[0].genDistr()
-            # Schedulo tot job in coda alla stazione 0
-            accoda(self.md.stazioni[0],Evento(0.0,servT,0,'coda',i,0))
-        pass
+            # Schedulo un job in coda alla stazione 0
+            accoda(self.md.stazioni[0],Evento(self.time,servT,-1,"coda",i,0))
+        # Schedulo un evento misura per la stampa dei vari indici delle stazioni
+        schedula(self.eventList,Evento(self.time,-1,genDistrMisura(self.time+2),"misura",-1,-1))
+        # Schedulo evento fine simulazione
+        schedula(self.eventList,Evento(self.time,-1,500,"fine",-1,-1))
+        print "\nFUTURE LIST:",self.eventList,"\n"
 
     def engine(self):
-        num=self.listDistrStaz[1].genDistr()
+        # Dizionario che simula lo "switch" per richiamare la funzione adeguata all gestione dell'evento
+        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine}
+        goOn=True
+        while goOn:
+            ev=recProxEvento(self.eventList)
+            """:type : Evento"""
+            self.time=ev.occT
+            goOn=tipoEv[ev.tipo](self)
+            print "FUTURE LIST:",self.eventList
+        # num=self.listDistrStaz[1].genDistr()
+        # print "NUM",num
         # Stampa delle distribuzioni che compongono il tempo di servizio di una stazione
-        # self.listDistrStaz[1].stampaDistr()
+        # self.listDistrStaz[0].stampaDistr()
         # chooseRoute(self.md.q[1])
 
     def report(self):

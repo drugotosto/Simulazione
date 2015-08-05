@@ -1,52 +1,28 @@
+from struttureDati.distStazione import genDistrMisura
+
 __author__ = 'maury'
 
 """
-    Gestore degli eventi per le diverse operazioni sulle diverse code (coda) delle stazioni
-    e liste del Simulatore (eventList,freeList)
+    Gestore degli eventi che fanno parte della Future Event List
 """
 
-import random as ran
-import numpy as np
-import bisect as bi
+from tools import *
 
-# Inserisce un evento nella Future Event List in ordine
-def schedula(evList,ev):
-    pass
+def arrivo(sim):
+    return True
 
-# Inserisce un evento al fondo della coda della stazione
-def accoda(staz,ev):
-    pass
+def partenza(sim):
+    return True
 
-# Inserisce un evento appena gestito nella freeList
-def restituisci(freeList,ev):
-    pass
+def misura(sim):
+    """
+    Gestione dell'evento di misura con conseguente stampa indici e
+    rischedulazione dello stesso evento
+    :param sim:
+    :return:
+    """
+    schedula(sim.eventList,Evento(sim.time,-1,genDistrMisura(sim.time),"misura",-1,-1))
+    return True
 
-# Preleva un evento dall Future Event List
-def recProxEvento(evList):
-    pass
-
-# Preleva prossimo job dalla coda della stazione
-def deQueueEvent(staz):
-    pass
-
-# Ritorna una strada scelta a caso tra quelle possibili da percorre a partite dalla stazione da cui si esce
-def chooseRoute(arr):
-        mTrans=np.array(arr)
-        cum={}
-        old=0.0
-        while len(cum)<len(mTrans):
-            cum[old+mTrans.max()]=np.argmax(mTrans)
-            old=old+mTrans.max()
-            mTrans.itemset(np.argmax(mTrans),0.0)
-        ran.seed()
-        n=ran.random()
-        # print "Valore casuale",n,"valore tornato:",find_ge(sorted(cum.keys()),n),"verso stazione:",cum[find_ge(sorted(cum.keys()),n)]
-        return cum[find_ge(sorted(cum.keys()),n)]
-
-# Metodo di ricerca veloce di un valore all'interno di un array ordinato
-def find_ge(a,x):
-    'Find leftmost item greater than or equal to x'
-    i = bi.bisect_left(a, x)
-    if i != len(a):
-        return a[i]
-    raise ValueError
+def fine(sim):
+    return False
