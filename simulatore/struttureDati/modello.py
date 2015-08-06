@@ -18,6 +18,7 @@ class Modello():
         self.stazioni=[]
         # Lista di dizioniari che verra trasormata in una lista di oggetti Stazione
         for staz in model["stazioni"]:
+            """:type : Stazione"""
             self.stazioni.append(Stazione(staz))
         self.q=model["q"]
 

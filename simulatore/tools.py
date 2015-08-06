@@ -23,6 +23,15 @@ def schedula(evList,ev):
     ind=bi.bisect(evList,ev)
     evList.insert(ind,ev)
 
+def recProxEvento(evList):
+    """
+    Preleva l'evento successivo dall Future Event List
+    :param evList: Future Event List (trattata come stack)
+    :type evList: list
+    :return: Evento successivo da prendere in considerazione (primo evento della lista)
+    """
+    return evList.pop(0)
+
 def accoda(staz,ev):
     """
     Inserisce un evento al fondo della coda della stazione
@@ -33,24 +42,6 @@ def accoda(staz,ev):
     """
     staz.coda.append(ev)
 
-def restituisci(freeList,ev):
-    """
-    Inserisce un evento appena gestito nella freeList
-    :param freeList: Lista che contiene gli eventi gia presi in considerazione da "riclicare"
-    :type freeList: list
-    :param ev: Evento da inserire
-    """
-    freeList.append(ev)
-
-def recProxEvento(evList):
-    """
-    Preleva l'evento successivo dall Future Event List
-    :param evList: Future Event List (trattata come stack)
-    :type evList: list
-    :return: Evento successivo da prendere in considerazione (primo evento della lista)
-    """
-    return evList.pop(0)
-
 def deQueueEvent(staz):
     """
     Preleva prossimo evento (job) dalla coda della stazione
@@ -60,13 +51,22 @@ def deQueueEvent(staz):
     """
     return staz.coda.pop(0)
 
+def restituisci(freeList,ev):
+    """
+    Inserisce un evento appena gestito nella freeList
+    :param freeList: Lista che contiene gli eventi gia presi in considerazione da "riclicare"
+    :type freeList: list
+    :param ev: Evento da inserire
+    """
+    freeList.append(ev)
+
 def chooseRoute(arr):
     """
     Ritorna una strada scelta a caso tra quelle possibili da percorre a partite
     dalla stazione da cui si esce
     :param arr: Lista delle diverse probabilita relative alle possibili strade da percorre
     :type arr: list
-    :return: Indice della stazione su cui andare l'evento in questione finira
+    :return: Indice della stazione su cui l'evento in questione finira
     """
     mTrans=np.array(arr)
     cum={}

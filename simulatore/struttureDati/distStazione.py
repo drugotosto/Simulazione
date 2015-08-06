@@ -94,8 +94,8 @@ class Distribuzione():
         """
         Metodo che genera una Sequenza di numeri casuali proseguedo
         lungo la sequenza di cui ci si era salvato lo stato
-        :param n: numero di numeri casuali che si vogliono
-        :return: sequenza di numeri casuali [0,1)
+        :param n: Numero di numeri casuali che si vogliono
+        :return: Sequenza di numeri casuali [0,1)
         """
         listNum=[]
         ran.setstate(self.stato)
@@ -104,10 +104,10 @@ class Distribuzione():
         self.setStato(ran.getstate())
         return np.array(listNum)
 
-def genDistrMisura(x):
+def genTempMisura(x):
     """
-    Generazione della istanza dell'evento di misura
-    :param x: parametro su cui calcolare il tempo
-    :return: istanza di tempo
+    Generazione della istanza dell'evento di misura in base al tempo di simulazione
+    :param x: Tempo di simulazione
+    :return: Istanza di tempo dell'evento di misura
     """
     return mt.pow(x,2)
