@@ -1,13 +1,13 @@
 __author__ = 'maury'
 
 """
-    Classe che definsice il cuore del simulatore che possiede come attributi
+    Classe che definsice il cuore del simulazione che possiede come attributi
     - eventList: lista degli eventi futuri
     - freeList: lista degli eventi che possono essere riclicati
-    - time: orologio del simulatore
-    - md: modello del sistema reale che il simulatore prendera in considerazione
+    - time: orologio del simulazione
+    - md: modello del sistema reale che il simulazione prendera in considerazione
 """
-from gestoreEventi import *
+from simulazione.gestoreEventi import *
 from struttureDati.evento import Evento
 from struttureDati.distStazione import DistStazione,genTempMisura
 from struttureDati.modello import Modello
@@ -29,7 +29,7 @@ class Simulatore():
         for staz in md.stazioni:
             self.listDistrStaz.append(DistStazione(staz,seme))
 
-    def inizialization(self,nj):
+    def inizialization(self,nj,tFine):
         """
         Schedula un job nella future event list in uscita dalla stazione "0"
         piu "tot" job in coda alla stazione 0 e un evento di misurazione
@@ -42,21 +42,22 @@ class Simulatore():
             # Genero una istanza del tempo di servizio della stazione 0 e lo schedulo in coda
             servT=self.listDistrStaz[0].genDistr()
             accoda(self.md.stazioni[0],Evento(self.time,servT,-1,"coda",i,0))
+        self.md.stazioni[0].Njobs=3
+        self.md.stazioni[0].nMax=3
         # Schedulo un evento misura per la stampa dei vari indici delle stazioni
         schedula(self.eventList,Evento(self.time,-1,genTempMisura(self.time+2),"misura",-1,-1))
         # Schedulo evento fine simulazione
-        schedula(self.eventList,Evento(self.time,-1,500,"fine",-1,-1))
-        print "\nFUTURE LIST:",self.eventList
-        print "CODA STAZIONE 0:",self.md.stazioni[0].coda,"\n"
+        schedula(self.eventList,Evento(self.time,-1,tFine,"fine",-1,-1))
 
     def engine(self):
         """
-        Motore del simulatore
+        Motore del simulazione
         """
         # Dizionario che simula lo "switch" per richiamare la funzione adeguata all gestione dell'evento
         tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine}
         goOn=True
         while goOn:
+            stampaSituazione(self)
             ev=recProxEvento(self.eventList)
             oldTime=self.time
             """:type : Evento"""
@@ -72,7 +73,6 @@ class Simulatore():
             # Richiamo la procedura opportuna per la gestione dell'evento considerato
             goOn=tipoEv[ev.tipo](self,ev)
             restituisci(self.freeList,ev)
-            print "FUTURE LIST:",self.eventList
         # Stampa delle distribuzioni che compongono il tempo di servizio di una stazione
         # self.listDistrStaz[0].stampaDistr()
 
@@ -80,4 +80,19 @@ class Simulatore():
         """
         Reportistica finale sui vari indice di prestazione
         """
-        pass
+        print "\n\nREPORTISTICA FINE SIMULAZIONE"
+        stampaSituazione(self)
+
+def stampaSituazione(sim):
+    # Stampa della Future Event List
+    print "\n\n-----EVENT LIST-----"
+    for event in sim.eventList:
+        print "Evento:",vars(event)
+
+    # Stampa delle code delle stazioni
+    print "\n+++++CODE STAZIONI+++++"
+    for staz in sim.md.stazioni:
+        print "Stazione",staz.id
+        for ev in staz.coda:
+            print "evento:",vars(ev)
+

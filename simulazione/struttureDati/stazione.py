@@ -13,7 +13,7 @@ __author__ = 'maury'
 """
 from classTools import Display
 
-class Stazione(Display):
+class Stazione():
     def __init__(self,stazione):
         """
         Costruttore della stazione

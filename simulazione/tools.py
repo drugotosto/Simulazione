@@ -15,7 +15,7 @@ from struttureDati.evento import Evento
 def schedula(evList,ev):
     """
     Inserisce un evento nella Future Event List in ordine
-    :param evList: Future Event List associata al simulatore
+    :param evList: Future Event List associata al simulazione
     :type evList: list
     :param ev: Evento da inserire in maniera ordinata
     :type ev: Evento

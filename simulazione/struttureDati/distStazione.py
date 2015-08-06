@@ -8,7 +8,7 @@ from itertools import count
 class DistStazione():
     """
     Classe che identifica la distribuzione del tempo di servizio per ogni stazione
-    Puo essere composta da piu distribuzioni
+    puo essere composta da piu distribuzioni
     """
     def __init__(self, staz, seme):
         self.id=staz.id
@@ -110,4 +110,7 @@ def genTempMisura(x):
     :param x: Tempo di simulazione
     :return: Istanza di tempo dell'evento di misura
     """
-    return mt.pow(x,2)
+    if x<256:
+        return mt.pow(x,2)
+    else:
+        return x*2

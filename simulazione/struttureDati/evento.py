@@ -3,8 +3,7 @@ __author__ = 'maury'
 from classTools import Display
 from itertools import count
 
-
-class Evento(Display,object):
+class Evento(object):
     _ids=count(1)
 
     def __init__(self,genT,serT,occT,tipo,idJob,idStaz):
@@ -35,7 +34,7 @@ class Evento(Display,object):
 
     def settaggioValori(self,genT,serT,occT,tipo,idJob,idStaz):
         """
-        Risettaggio dei parametri dati all'evento appena prelevato dalla freeList del simulatore
+        Risettaggio dei parametri dati all'evento appena prelevato dalla freeList del simulazione
         :param genT: Tempo di generazione dell'evento
         :param serT: Tempo di servizio generato
         :param occT: Tempo in cui verra schedulato l'evento
