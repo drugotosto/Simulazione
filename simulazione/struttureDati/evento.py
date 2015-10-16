@@ -2,18 +2,19 @@ __author__ = 'maury'
 
 from classTools import Display
 from itertools import count
+import bisect as bi
 
 class Evento(object):
     _ids=count(1)
 
-    def __init__(self,genT,serT,occT,tipo,idJob,idStaz):
+    def     __init__(self,genT,serT,occT,tipo,idJob,idStaz):
         """
         Settaggio dei parametri al nuovo evento appena creato
         :param genT: Tempo di generazione dell'evento
         :param serT: Tempo di servizio generato
         :param occT: Tempo in cui verra schedulato l'evento
         :param tipo: Tipologia dell'evento
-        :param idJob: Id del job al quale l'evento si riferisce
+        :param idJob: Id del job/utente al quale l'evento si riferisce
         :param idStaz: Id della stazione al quale si riferisce l'evento
         """
         self.genT=genT
@@ -50,11 +51,23 @@ class Evento(object):
         self.idStaz=idStaz
         self.idEv=self._ids.next()
 
+def schedula(evList,ev):
+    """
+    Inserisce un evento nella Future Event List in ordine
+    :param evList: Future Event List associata al simulazione
+    :type evList: list
+    :param ev: Evento da inserire in maniera ordinata
+    :type ev: Evento
+    """
+    ind=bi.bisect(evList,ev)
+    evList.insert(ind,ev)
+
 
 if __name__ == '__main__':
-    ev1=Evento(0.0,3.0,"null","coda",1,0)
-    ev2=Evento(0.0,4.0,4.0,"partenza",2,0)
-    ev3=Evento(1.0,2.0,"null","coda",3,0)
+    ev1=Evento(0.0,3.0,1.0,"coda",1,0)
+    ev2=Evento(0.0,4.0,"null","partenza",2,0)
+    ev3=Evento(1.0,2.0,2.0,"coda",3,0)
+    evList=[]
 
     if(ev1<ev2):
         print "L'evento 1 accade prima dell'evento 2"
@@ -75,5 +88,12 @@ if __name__ == '__main__':
     """
     print "VARS:",vars(ev1)
 
-    print "STAMPA Ev2:",ev2
-    print "STAMPA Ev2:",ev3
+    print "STAMPA Ev2:",vars(ev2)
+    print "STAMPA Ev3:",vars(ev3)
+
+    schedula(evList,ev1)
+    schedula(evList,ev2)
+    schedula(evList,ev3)
+
+    for ev in evList:
+        print("La lista ordinata e: ",ev.idJob)

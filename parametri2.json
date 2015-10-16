@@ -4,8 +4,8 @@
     {
       "id": 0,
       "nome": "terminali",
-      "z": 2.0,
-      "tipo": "infinite"
+      "tipo": "infinite",
+      "z": 2.0
     },
     {
       "id": 1,
@@ -34,8 +34,8 @@
     {
       "id": 3,
       "nome": "Riposo",
-      "z": 200.0,
-      "tipo": "infinite"
+      "tipo": "infinite",
+      "z": 200.0
     }
   ],
   "q":

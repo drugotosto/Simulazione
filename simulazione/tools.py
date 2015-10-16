@@ -7,10 +7,13 @@ __author__ = 'maury'
 """
 
 import random as ran
+import collections
 import numpy as np
 import bisect as bi
+import time
 from struttureDati.stazione import Stazione
 from struttureDati.evento import Evento
+from simulatore import *
 
 def schedula(evList,ev):
     """
@@ -60,12 +63,14 @@ def restituisci(freeList,ev):
     """
     freeList.append(ev)
 
-def chooseRoute(arr):
+def chooseRoute(arr,route):
     """
     Ritorna una strada scelta a caso tra quelle possibili da percorre a partite
     dalla stazione da cui si esce
     :param arr: Lista delle diverse probabilita relative alle possibili strade da percorre
     :type arr: list
+    :param route: Generatore utilizzato per la scelta a caso del percorso
+    :type route: ran.Random
     :return: Indice della stazione su cui l'evento in questione finira
     """
     mTrans=np.array(arr)
@@ -75,21 +80,69 @@ def chooseRoute(arr):
         cum[old+mTrans.max()]=np.argmax(mTrans)
         old=old+mTrans.max()
         mTrans.itemset(np.argmax(mTrans),0.0)
-    ran.seed()
-    n=ran.random()
-    # print "Valore casuale",n,"valore tornato:",find_ge(sorted(cum.keys()),n),"verso stazione:",cum[find_ge(sorted(cum.keys()),n)]
-    return cum[find_ge(sorted(cum.keys()),n)]
+    n=route.random()
+    # print "DIZ:",cum
+    ind=ricerca(n,sorted(cum.keys()))
+    # print "LISTA ORD:",sorted(cum.keys())
+    print "Valore casuale",n,"verso stazione:",cum[ind]
+    return cum[ind]
 
 # Metodo di ricerca veloce di un valore all'interno di un array ordinato
-def find_ge(a,x):
+def ricerca(n,lista):
+    for i,val in enumerate(lista):
+        if val>=n:
+            return val
+
+def stampaSituazione(sim):
     """
-    Funzione che attraverso un algoritmo di bisezione della libreria garantisce l'inserimento
-    effeciente di un oggetto all'interno di una lista gia ordinata
-    :param a: Lista gia ordinata
-    :param x: Oggetto da inserire
+    Stampa a video della situazione del Simulatore con rispettiva Future Event List
+    e code delle varie stazioni
+    :param sim: Oggetto Simulatore
+    :type sim: Simulatore
     """
-    'Find leftmost item greater than or equal to x'
-    i = bi.bisect_left(a, x)
-    if i != len(a):
-        return a[i]
-    raise ValueError
+    # Stampa della Future Event List
+    print "\n\n-----EVENT LIST-----"
+    for event in sim.eventList:
+        print "Evento:",vars(event)
+
+    # Stampa delle code delle stazioni
+    print "\n+++++CODE STAZIONI+++++"
+    for staz in sim.md.stazioni:
+        print "Stazione",staz.id
+        for ev in staz.coda:
+            print "evento:",vars(ev)
+
+def calcoloStampaIndici(sim):
+    """
+    Calcolo e stampa a video degli indici di prestazione per le diverse stazioni
+    :param sim: Oggetto Simulatore
+    :type sim: Simulatore
+    """
+    for staz in sim.md.stazioni:
+        print "\nStazione:",staz.id,"nome:",staz.nome
+        staz.indici["U"]=staz.busyT/sim.time
+        print "UTILIZZAZIONE:",staz.indici["U"]
+        staz.indici["X"]=staz.partenze/sim.time
+        print "THROUGHPUT:",staz.indici["X"]
+        if staz.partenze!=0:
+            staz.indici["W"]=staz.area/staz.partenze
+        print "T. MEDIO PERMANENZA:",staz.indici["W"]
+        staz.indici["N"]=staz.area/sim.time
+        print "N. MEDIO PERSONE:",staz.indici["N"]
+
+def controlloFine(sim,ev,nj,indStaz):
+    """
+    Controllo che sia in una situazione di E.O
+    :param sim: Oggetto simulatore
+    :type sim: Simulatore
+    :param ev: Prox evento da gestire
+    :type ev: Evento
+    :param nj: Numero di eventi in coda alla stazione 0 (come ero partito)
+    :return: True sono in E.O. False altrimenti
+    """
+    for i,staz in enumerate(sim.md.stazioni):
+        # Per tutte le stazioni diverse da quella di partenza
+        if ev.idStaz==i and staz.Njobs==nj+1 and len(staz.coda)==nj and ev.tipo=="partenza":
+            return True
+        else:
+            return False

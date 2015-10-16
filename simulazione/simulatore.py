@@ -9,72 +9,88 @@ __author__ = 'maury'
 """
 from simulazione.gestoreEventi import *
 from struttureDati.evento import Evento
-from struttureDati.distStazione import DistStazione,genTempMisura
+from struttureDati.servizio import genTempMisura
 from struttureDati.modello import Modello
+import numpy as np
+import random as ran
 
 class Simulatore():
-    def __init__(self,md,seme):
+    def __init__(self,md):
         """
-        Costruttore del Simulatore che recupera il modello e il seme
-        con cui inizializzare il generatore di numeri causuali
+        Costruttore del Simulatore che recupera il modello e setta o meno un
+        seme di debug con cui inizializzare il generatore di numeri causuali
         :param md: Modello preso in considerazione dal file json
         :type md: Modello
         :param seme: seme iniziale con il quale inizializzare il generatore di num. casuali
         """
         self.eventList=[]
         self.freeList=[]
-        self.time=0.0
+        self.time=np.float(0)
         self.md=md
-        self.listDistrStaz=[]
-        for staz in md.stazioni:
-            self.listDistrStaz.append(DistStazione(staz,seme))
 
-    def inizialization(self,nj,tFine):
+    def inizialization(self,nj,tFine,indStaz):
         """
-        Schedula un job nella future event list in uscita dalla stazione "0"
-        piu "tot" job in coda alla stazione 0 e un evento di misurazione
+        Schedula un job nella future event list in uscita dalla stazione "indStaz"
+        piu "tot" job in coda alla stazione "IndStaz" , un evento di misurazione
+        e un evento di fine simulazione
         :param nj: numero di job da inserire in coda alla stazione 0
         """
-        # Genero una istanza del tempo di servizio e schedulo una partenza dalla stazione 0
-        servT=self.listDistrStaz[0].genDistr()
-        schedula(self.eventList,Evento(self.time,servT,servT,"partenza",1,0))
+        # Genero una istanza del tempo di servizio e schedulo una partenza dalla stazione "indStaz"
+        servT=self.md.stazioni[indStaz].genTempSer()
+        schedula(self.eventList,Evento(self.time,servT,servT,"partenza",1,indStaz))
         for i in range(2,nj+2):
-            # Genero una istanza del tempo di servizio della stazione 0 e lo schedulo in coda
-            servT=self.listDistrStaz[0].genDistr()
-            accoda(self.md.stazioni[0],Evento(self.time,servT,-1,"coda",i,0))
-        self.md.stazioni[0].Njobs=3
-        self.md.stazioni[0].nMax=3
+            # Genero una istanza del tempo di servizio della stazione 1 e lo schedulo in coda
+            servT=self.md.stazioni[indStaz].genTempSer()
+            accoda(self.md.stazioni[indStaz],Evento(self.time,servT,-1,"coda",i,indStaz))
+        self.md.stazioni[indStaz].Njobs=nj+1
+        self.md.stazioni[indStaz].nMax=nj+1
         # Schedulo un evento misura per la stampa dei vari indici delle stazioni
         schedula(self.eventList,Evento(self.time,-1,genTempMisura(self.time+2),"misura",-1,-1))
         # Schedulo evento fine simulazione
         schedula(self.eventList,Evento(self.time,-1,tFine,"fine",-1,-1))
 
-    def engine(self):
+    def engine(self,nj,tMax,indStaz,debug):
         """
-        Motore del simulazione
+        Motore del simulatore
         """
         # Dizionario che simula lo "switch" per richiamare la funzione adeguata all gestione dell'evento
         tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine}
         goOn=True
+        okStop=False
+        # Istanzio un generatore di numeri casuali utilizzato per il routing degli eventi
+        route=ran.Random()
+        if debug:
+            route.seed(10)
+        else:
+            route.seed()
         while goOn:
             stampaSituazione(self)
+            # Recupero prox evento dalla FUTURE EVENT LIST
             ev=recProxEvento(self.eventList)
             oldTime=self.time
             """:type : Evento"""
             self.time=ev.occT
-            interval=self.time-oldTime
-            # Aggiorno le statistiche delle stazioni
-            for staz in self.md.stazioni:
-                if staz.Njobs>0:
-                    staz.busyT+=interval
-                    staz.area+=interval*staz.Njobs
-                    if staz.Njobs>staz.nMax:
-                        staz.nMax=staz.Njobs
-            # Richiamo la procedura opportuna per la gestione dell'evento considerato
-            goOn=tipoEv[ev.tipo](self,ev)
-            restituisci(self.freeList,ev)
+            interval=np.float(self.time-oldTime)
+            # Termino se ho gia superato la fine simulazione e sono in E.O. o se cmq ho superato la soglia massima
+            if (okStop and controlloFine(self,ev,nj,indStaz))or(self.time>=tMax):
+                if self.time<tMax:
+                    print "\nSONO USCITO IN E.O."
+                else:
+                    print "\nSONO USCITO PER EVITARE LOOP"
+                goOn=False
+            else:
+                # Aggiorno le statistiche delle stazioni
+                for staz in self.md.stazioni:
+                    if staz.Njobs>0:
+                        staz.busyT+=interval
+                        staz.area+=np.float(interval*staz.Njobs)
+                        if staz.Njobs>staz.nMax:
+                            staz.nMax=staz.Njobs
+                # Richiamo la procedura opportuna per la gestione dell'evento considerato
+                okStop=tipoEv[ev.tipo](self,ev,okStop,route)
+                restituisci(self.freeList,ev)
         # Stampa delle distribuzioni che compongono il tempo di servizio di una stazione
-        # self.listDistrStaz[0].stampaDistr()
+        # self.md.stazioni[1].stampaDistr()
 
     def report(self):
         """
@@ -82,17 +98,6 @@ class Simulatore():
         """
         print "\n\nREPORTISTICA FINE SIMULAZIONE"
         stampaSituazione(self)
+        calcoloStampaIndici(self)
 
-def stampaSituazione(sim):
-    # Stampa della Future Event List
-    print "\n\n-----EVENT LIST-----"
-    for event in sim.eventList:
-        print "Evento:",vars(event)
-
-    # Stampa delle code delle stazioni
-    print "\n+++++CODE STAZIONI+++++"
-    for staz in sim.md.stazioni:
-        print "Stazione",staz.id
-        for ev in staz.coda:
-            print "evento:",vars(ev)
 
