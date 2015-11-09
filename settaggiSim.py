@@ -7,13 +7,16 @@ nj=2
 indStaz=0
 
 # Tempo di schedulazione fine simulazione
-tFine=200000
+tFine=10000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=220000
+tMax=20000
 
 # File da cui andare a recuperare i dati
-pathDati="parametri2.json"
+pathDati="exponential.json"
 
 # Seme da utilizzare per l'inizializzazione del generatore di numeri casuali
-debug=True
+debug=False
+
+# Massimo indice da utilizzare come indice per pescare un numero casuale primo da utilizzare come seme
+maxRange=100000

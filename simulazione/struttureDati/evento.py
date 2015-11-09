@@ -7,7 +7,7 @@ import bisect as bi
 class Evento(object):
     _ids=count(1)
 
-    def     __init__(self,genT,serT,occT,tipo,idJob,idStaz):
+    def __init__(self,genT,serT,occT,tipo,idJob,idStaz):
         """
         Settaggio dei parametri al nuovo evento appena creato
         :param genT: Tempo di generazione dell'evento

@@ -14,6 +14,7 @@ import time
 from struttureDati.stazione import Stazione
 from struttureDati.evento import Evento
 from simulatore import *
+from settaggiSim import debug
 
 def schedula(evList,ev):
     """
@@ -69,10 +70,9 @@ def chooseRoute(arr,route):
     dalla stazione da cui si esce
     :param arr: Lista delle diverse probabilita relative alle possibili strade da percorre
     :type arr: list
-    :param route: Generatore utilizzato per la scelta a caso del percorso
-    :type route: ran.Random
     :return: Indice della stazione su cui l'evento in questione finira
     """
+    num=route.random()
     mTrans=np.array(arr)
     cum={}
     old=0.0
@@ -80,28 +80,28 @@ def chooseRoute(arr,route):
         cum[old+mTrans.max()]=np.argmax(mTrans)
         old=old+mTrans.max()
         mTrans.itemset(np.argmax(mTrans),0.0)
-    n=route.random()
     # print "DIZ:",cum
-    ind=ricerca(n,sorted(cum.keys()))
+    ind=ricerca(num,sorted(cum.keys()))
     # print "LISTA ORD:",sorted(cum.keys())
-    print "Valore casuale",n,"verso stazione:",cum[ind]
+    # print "Valore casuale",num,"verso stazione:",cum[ind]
     return cum[ind]
 
-# Metodo di ricerca veloce di un valore all'interno di un array ordinato
+# Metodo di ricerca di un valore all'interno di un array ordinato
 def ricerca(n,lista):
     for i,val in enumerate(lista):
         if val>=n:
             return val
 
-def stampaSituazione(sim):
+def stampaSituazione(sim,clock):
     """
     Stampa a video della situazione del Simulatore con rispettiva Future Event List
     e code delle varie stazioni
     :param sim: Oggetto Simulatore
     :type sim: Simulatore
     """
+    print "\n\n!!!!!!!!!!!!! CLOCK:",clock," !!!!!!!!!!!!"
     # Stampa della Future Event List
-    print "\n\n-----EVENT LIST-----"
+    print "\n-----EVENT LIST-----"
     for event in sim.eventList:
         print "Evento:",vars(event)
 
@@ -111,6 +111,7 @@ def stampaSituazione(sim):
         print "Stazione",staz.id
         for ev in staz.coda:
             print "evento:",vars(ev)
+
 
 def calcoloStampaIndici(sim):
     """
@@ -140,9 +141,13 @@ def controlloFine(sim,ev,nj,indStaz):
     :param nj: Numero di eventi in coda alla stazione 0 (come ero partito)
     :return: True sono in E.O. False altrimenti
     """
-    for i,staz in enumerate(sim.md.stazioni):
-        # Per tutte le stazioni diverse da quella di partenza
-        if ev.idStaz==i and staz.Njobs==nj+1 and len(staz.coda)==nj and ev.tipo=="partenza":
+    if sim.md.stazioni[indStaz].tipo!="infinite":
+        if sim.md.stazioni[indStaz].Njobs==nj+1 and len(sim.md.stazioni[indStaz].coda)==nj and ev.tipo=="partenza" and ev.idStaz==indStaz:
             return True
         else:
             return False
+    else:
+        if sim.md.stazioni[indStaz].Njobs==nj+1 and ev.idStaz==indStaz and ev.tipo=="partenza":
+            return True
+
+

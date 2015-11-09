@@ -27,14 +27,11 @@ class Stazione():
         self.nMax=0
         self.coda=[]
         self.indici={'X':np.float(0),'W':np.float(0),'N':np.float(0),'U':np.float(0)}
-        if staz["tipo"]=="infinite":
-            self.z=np.float(staz["z"])
-        else:
-            self.servizio=Servizio(staz,debug)
+        self.servizio=Servizio(staz)
 
     def genTempSer(self):
         if self.tipo=="infinite":
-            return self.z
+            return self.servizio.genDistrIF()
         else:
             return self.servizio.genDistr()
 

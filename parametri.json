@@ -11,7 +11,7 @@
       "id": 1,
       "nome": "cpu",
       "s": 0.03,
-      "tipo": "server",
+      "tipo": "erlang",
       "k":3
     },
     {

@@ -11,6 +11,7 @@ from simulazione.gestoreEventi import *
 from struttureDati.evento import Evento
 from struttureDati.servizio import genTempMisura
 from struttureDati.modello import Modello
+from simulazione.struttureDati.servizio import generaSeme
 import numpy as np
 import random as ran
 
@@ -39,9 +40,12 @@ class Simulatore():
         servT=self.md.stazioni[indStaz].genTempSer()
         schedula(self.eventList,Evento(self.time,servT,servT,"partenza",1,indStaz))
         for i in range(2,nj+2):
-            # Genero una istanza del tempo di servizio della stazione 1 e lo schedulo in coda
             servT=self.md.stazioni[indStaz].genTempSer()
-            accoda(self.md.stazioni[indStaz],Evento(self.time,servT,-1,"coda",i,indStaz))
+             # Nel caso la stazione di partenza non fosse un I.S. allora accodo gli altri jobs
+            if self.md.stazioni[indStaz].tipo!="infinite":
+                accoda(self.md.stazioni[indStaz],Evento(self.time,servT,-1,"coda",i,indStaz))
+            else:
+                schedula(self.eventList,Evento(self.time,servT,servT,"partenza",i,indStaz))
         self.md.stazioni[indStaz].Njobs=nj+1
         self.md.stazioni[indStaz].nMax=nj+1
         # Schedulo un evento misura per la stampa dei vari indici delle stazioni
@@ -59,17 +63,14 @@ class Simulatore():
         okStop=False
         # Istanzio un generatore di numeri casuali utilizzato per il routing degli eventi
         route=ran.Random()
-        if debug:
-            route.seed(10)
-        else:
-            route.seed()
+        route.seed(generaSeme())
         while goOn:
-            stampaSituazione(self)
             # Recupero prox evento dalla FUTURE EVENT LIST
             ev=recProxEvento(self.eventList)
             oldTime=self.time
             """:type : Evento"""
             self.time=ev.occT
+            stampaSituazione(self,self.time)
             interval=np.float(self.time-oldTime)
             # Termino se ho gia superato la fine simulazione e sono in E.O. o se cmq ho superato la soglia massima
             if (okStop and controlloFine(self,ev,nj,indStaz))or(self.time>=tMax):
@@ -97,7 +98,7 @@ class Simulatore():
         Reportistica finale sui vari indice di prestazione
         """
         print "\n\nREPORTISTICA FINE SIMULAZIONE"
-        stampaSituazione(self)
+        stampaSituazione(self,self.time)
         calcoloStampaIndici(self)
 
 

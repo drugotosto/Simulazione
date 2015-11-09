@@ -185,11 +185,6 @@ def ricercaOggettoStato(md,stazOut,tipo,k=0):
             if (stato.stato==stazOut)and(stato.tipo==tipo):
                 return i
 
-
-"""
-DA QUI IN POI UGUALE A MASTER
-"""
-
 # Costruzione di una riga alla volta della matrice Q
 def costruzioneRigaQ(i,listStatVel,q):
     som=0.0

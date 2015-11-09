@@ -25,6 +25,7 @@ class Modello():
         self.q=model["q"]
 
     def stampaStazioni(self):
+        print "\n"
         for staz in  self.stazioni:
             print "Stazione ",staz.id,": ",vars(staz)
 

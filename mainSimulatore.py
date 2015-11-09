@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
     md=Modello(pathDati,debug)
-    md.stampaStazioni()
+    # md.stampaStazioni()
     # Creazione del simulazione passandogli il modello appena creato
     sim=Simulatore(md)
     # Inizializzazione del simulazione con inserimento di "nj" job in coda alla stazione "indStaz" e tempo di terminazione della simulazione

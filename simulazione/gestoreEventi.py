@@ -18,38 +18,53 @@ def arrivo(sim,event,okStop,route):
     :type event: Evento
     :return: Continua simulazione
     """
-    print "\nARRIVO del job:",event.idJob,"alla stazione:",event.idStaz
+    print "\nGESTISCO ARRIVO: ",vars(event)
     sim.md.stazioni[event.idStaz].arrivi+=1
     sim.md.stazioni[event.idStaz].Njobs+=1
     # Genero una istanza della distribuzione del tempo di servizio associata alla stazione di arrivo
     servT=sim.md.stazioni[event.idStaz].genTempSer()
     partT=servT+sim.time
-    print "NUM JOBS alla stazione (dopo arrivo)",sim.md.stazioni[event.idStaz].id,"sono:",sim.md.stazioni[event.idStaz].Njobs
-    # Un solo evento alla stazione
-    if sim.md.stazioni[event.idStaz].Njobs==1 and len(sim.md.stazioni[event.idStaz].coda)==0:
-        # Schedulo partenza dello stesso evento da questa stazione nel caso prelevando dalla freeList se ci sono eventi passati
+    print "NUM JOBS alla stazione",sim.md.stazioni[event.idStaz].id,"sono:",sim.md.stazioni[event.idStaz].Njobs
+    print "Tempo di servizio:",servT
+    # La stazione non e I.S.
+    if sim.md.stazioni[event.idStaz].tipo!="infinite":
+        # Un solo evento alla stazione
+        if sim.md.stazioni[event.idStaz].Njobs==1 and len(sim.md.stazioni[event.idStaz].coda)==0:
+            # Schedulo partenza dello stesso evento da questa stazione nel caso prelevando dalla freeList se ci sono eventi passati
+            if len(sim.freeList)>0:
+                freeEv=sim.freeList.pop()
+                """:type : Evento"""
+                freeEv.settaggioValori(sim.time,servT,partT,"partenza",event.idJob,event.idStaz)
+                schedula(sim.eventList,freeEv)
+                print "Schedulata Partenza nella Future Event List:",vars(freeEv),"perche il job era unico in coda"
+            else:
+                nextEv=Evento(sim.time,servT,partT,"partenza",event.idJob,event.idStaz)
+                schedula(sim.eventList,nextEv)
+                print "Schedulato Partenza nella Future Event List:",vars(nextEv),"perche il job era unico in coda"
+        # Accodo l'evento alla stazione
+        else:
+            if len(sim.freeList)>0:
+                freeEv=sim.freeList.pop()
+                """:type : Evento"""
+                freeEv.settaggioValori(sim.time,servT,-1,"coda",event.idJob,event.idStaz)
+                accoda(sim.md.stazioni[event.idStaz],freeEv)
+                print "Accodato evento alla stazione:",vars(freeEv)
+            else:
+                nextEv=Evento(sim.time,servT,-1,"coda",event.idJob,event.idStaz)
+                accoda(sim.md.stazioni[event.idStaz],nextEv)
+                print "Accodato evento alla stazione:",vars(nextEv)
+    else:
+        # Schedulo subito la partenza dello stesso evento da I.S. nel caso prelevando dalla freeList se ci sono eventi passati
         if len(sim.freeList)>0:
             freeEv=sim.freeList.pop()
             """:type : Evento"""
             freeEv.settaggioValori(sim.time,servT,partT,"partenza",event.idJob,event.idStaz)
             schedula(sim.eventList,freeEv)
-            print "Schedulata Partenza nella Future Event List:",vars(freeEv),"perche il job era unico in coda"
+            print "Schedulata Partenza nella Future Event List:",vars(freeEv),"perche la stazione e I.S."
         else:
             nextEv=Evento(sim.time,servT,partT,"partenza",event.idJob,event.idStaz)
             schedula(sim.eventList,nextEv)
-            print "Schedulato Partenza nella Future Event List:",vars(nextEv),"perche il job era unico in coda"
-    # Accodo l'evento alla stazione
-    else:
-        if len(sim.freeList)>0:
-            freeEv=sim.freeList.pop()
-            """:type : Evento"""
-            freeEv.settaggioValori(sim.time,servT,-1,"coda",event.idJob,event.idStaz)
-            accoda(sim.md.stazioni[event.idStaz],freeEv)
-            print "Accodato evento alla stazione:",vars(freeEv)
-        else:
-            nextEv=Evento(sim.time,servT,-1,"coda",event.idJob,event.idStaz)
-            accoda(sim.md.stazioni[event.idStaz],nextEv)
-            print "Accodato evento alla stazione:",vars(nextEv)
+            print "Schedulato Partenza nella Future Event List:",vars(nextEv),"perche la stazione e I.S."
     if okStop==False:
         return False
     else:
@@ -64,12 +79,12 @@ def partenza(sim,event,okStop,route):
     :type event: Evento
     :return: Continua simulazione
     """
-    print "\nPARTENZA del job:",event.idJob,"dalla stazione:",event.idStaz
+    print "\nGESTISCO PARTENZA: ",vars(event)
     sim.md.stazioni[event.idStaz].partenze+=1
     sim.md.stazioni[event.idStaz].Njobs-=1
-    print "NUM JOBS alla stazione (dopo la partenza)",sim.md.stazioni[event.idStaz].id,"sono:",sim.md.stazioni[event.idStaz].Njobs
-    # Nel caso ci fossero altri eventi in stazione
-    if len(sim.md.stazioni[event.idStaz].coda)>=1:
+    print "NUM JOBS alla stazione:",sim.md.stazioni[event.idStaz].id,"dopo la partenza sono:",sim.md.stazioni[event.idStaz].Njobs
+    # Nel caso ci fossero altri eventi in stazione e la stazione non e I.S.
+    if len(sim.md.stazioni[event.idStaz].coda)>=1 and sim.md.stazioni[event.idStaz].tipo!="infinite":
         ev=deQueueEvent(sim.md.stazioni[event.idStaz])
         """:type : Evento"""
         partT=sim.time+ev.serT
@@ -85,7 +100,6 @@ def partenza(sim,event,okStop,route):
             schedula(sim.eventList,nextEv)
             print "Schedulato Evento dalla coda:",vars(nextEv),"e inserito in Event List"
     # Schedulo un arrivo alla stazione successiva (se esistono piu strade ne scelgo una a caso)
-    print "\nProbabilita di transizione dalla stazione:",event.idStaz,"sono:",sim.md.q[event.idStaz]
     # Controllo nel caso ci sia la possibilita di prendere strade differenti
     if sim.md.q[event.idStaz].count(0.0)<(len(sim.md.stazioni)-1):
         print "Esistono piu strade percorribili..."
