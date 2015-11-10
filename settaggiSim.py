@@ -7,10 +7,10 @@ nj=2
 indStaz=0
 
 # Tempo di schedulazione fine simulazione
-tFine=10000
+tFine=60000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=20000
+tMax=80000
 
 # File da cui andare a recuperare i dati
 pathDati="exponential.json"
@@ -20,3 +20,9 @@ debug=False
 
 # Massimo indice da utilizzare come indice per pescare un numero casuale primo da utilizzare come seme
 maxRange=100000
+
+# Intervallo utilizzato per il calcolo della fine del transitorio
+transInterval=3000
+
+# Scarto massimo accettabile per affermare la fine del transitorio
+fermezza=0.1

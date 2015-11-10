@@ -22,11 +22,14 @@ class Stazione():
         self.Njobs=np.float(0)
         self.busyT=np.float(0)
         self.area=np.float(0)
+        self.areaInterv=np.float(0)
         self.arrivi=np.float(0)
         self.partenze=np.float(0)
+        self.partenzeInterv=np.float(0)
         self.nMax=0
         self.coda=[]
         self.indici={'X':np.float(0),'W':np.float(0),'N':np.float(0),'U':np.float(0)}
+        self.indiciInterv={'X':np.float(0),'W':np.float(0),'N':np.float(0),'U':np.float(0)}
         self.servizio=Servizio(staz)
 
     def genTempSer(self):
