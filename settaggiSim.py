@@ -7,10 +7,10 @@ nj=2
 indStaz=0
 
 # Tempo di schedulazione fine simulazione
-tFine=60000
+tFine=20000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=80000
+tMax=30000
 
 # File da cui andare a recuperare i dati
 pathDati="exponential.json"
