@@ -7,6 +7,7 @@ __author__ = 'maury'
     - time: orologio del simulazione
     - md: modello del sistema reale che il simulazione prendera in considerazione
 """
+from settaggiSim import *
 from simulazione.gestoreEventi import *
 from struttureDati.evento import Evento
 from struttureDati.servizio import genTempMisura
@@ -30,7 +31,7 @@ class Simulatore():
         self.md=md
         self.fineTrans=0.0
 
-    def inizialization(self,nj,tFine,indStaz):
+    def inizialization(self):
         """
         Schedula un job nella future event list in uscita dalla stazione "indStaz"
         piu "tot" job in coda alla stazione "IndStaz" , un evento di misurazione
@@ -54,7 +55,7 @@ class Simulatore():
         # Schedulo evento fine simulazione
         schedula(self.eventList,Evento(self.time,-1,tFine,"fine",-1,-1))
 
-    def engine(self,nj,tMax,indStaz,debug):
+    def engine(self):
         """
         Motore del simulatore
         """
@@ -62,7 +63,6 @@ class Simulatore():
         tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine}
         goOn=True
         okStop=False
-        numGiri=1
         # Istanzio un generatore di numeri casuali utilizzato per il routing degli eventi
         route=ran.Random()
         route.seed(generaSeme())
@@ -92,9 +92,6 @@ class Simulatore():
                 # Richiamo la procedura opportuna per la gestione dell'evento considerato
                 okStop=tipoEv[ev.tipo](self,ev,okStop,route)
                 restituisci(self.freeList,ev)
-                # Operazioni per calcolo fine transitorio (richiamo la funzione fino a quando non raggiungo precisione desiderata)
-                if self.fineTrans==0.0:
-                    numGiri=calcoloFineTransitorio(self,numGiri)
 
         # Stampa delle distribuzioni che compongono il tempo di servizio di una stazione
         # self.md.stazioni[1].stampaDistr()

@@ -12,7 +12,8 @@ tFine=20000
 # Tempo estremo termine simulazione per evitare LOOP
 tMax=30000
 
-# File da cui andare a recuperare i dati
+# File da cui andare a recuperar
+# e i dati
 pathDati="exponential.json"
 
 # Seme da utilizzare per l'inizializzazione del generatore di numeri casuali
@@ -20,9 +21,3 @@ debug=False
 
 # Massimo indice da utilizzare come indice per pescare un numero casuale primo da utilizzare come seme
 maxRange=100000
-
-# Intervallo utilizzato per il calcolo della fine del transitorio
-transInterval=3000
-
-# Scarto massimo accettabile per affermare la fine del transitorio
-fermezza=0.1
