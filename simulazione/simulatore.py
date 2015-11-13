@@ -62,7 +62,6 @@ class Simulatore():
         tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine}
         goOn=True
         okStop=False
-        numGiri=1
         # Istanzio un generatore di numeri casuali utilizzato per il routing degli eventi
         route=ran.Random()
         route.seed(generaSeme())
@@ -92,9 +91,6 @@ class Simulatore():
                 # Richiamo la procedura opportuna per la gestione dell'evento considerato
                 okStop=tipoEv[ev.tipo](self,ev,okStop,route)
                 restituisci(self.freeList,ev)
-                # Operazioni per calcolo fine transitorio (richiamo la funzione fino a quando non raggiungo precisione desiderata)
-                if self.fineTrans==0.0:
-                    numGiri=calcoloFineTransitorio(self,numGiri)
 
         # Stampa delle distribuzioni che compongono il tempo di servizio di una stazione
         # self.md.stazioni[1].stampaDistr()

@@ -152,33 +152,3 @@ def controlloFine(sim,ev,nj,indStaz):
             return True
 
 
-def calcoloFineTransitorio(sim,numGiri):
-    if (sim.time>transInterval*numGiri):
-        fineTrans=False
-        for staz in sim.md.stazioni:
-            staz.areaInterv=staz.area-staz.areaInterv
-            staz.partenzeInterv=staz.partenze-staz.partenzeInterv
-        oldInt=salvaVecchioIntervallo(sim)
-        print("Indici Vecchio Intervallo:",oldInt)
-        # Calcolo indici per il nuovo intervallo (di tutte le stazioni)
-        for staz in sim.md.stazioni:
-            staz.indiciInterv["X"]=staz.partenzeInterv/(sim.time-((numGiri-1)*transInterval))
-            staz.indiciInterv["N"]=staz.areaInterv/(sim.time-((numGiri-1)*transInterval))
-        fineTrans=confrontoIntervalli(sim,oldInt,numGiri)
-        if fineTrans:
-            sim.fineTrans=sim.time
-        numGiri+=1
-    return numGiri
-
-# Ritorna una lista delle copie dei vari indici di prestazione per l'ultimo intervallo di ogni stazione
-def salvaVecchioIntervallo(sim):
-    oldInt=[copy.deepcopy(staz.indiciInterv) for staz in sim.md.stazioni]
-    return oldInt
-
-# Confronto gli ultimi 2 intervalli per verificare la fermezza delle medie
-def confrontoIntervalli(sim,oldInt,numGiri):
-    fineTrans= True
-    for i,staz in enumerate(sim.md.stazioni):
-        if abs(staz.indiciInterv["X"]-oldInt[i]["X"])>fermezza:
-            fineTrans=False
-    return fineTrans
