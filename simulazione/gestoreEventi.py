@@ -8,8 +8,9 @@ from tools import *
 from classTools import Display
 from struttureDati.servizio import genTempMisura
 from struttureDati.evento import Evento
+from simulazione.struttureDati.transitorio import Transitorio
 
-def arrivo(sim,event,okStop,route):
+def arrivo(sim,event,okStop,route,trans):
     """
     Gestione di un arrivo ad una stazione.
     :param sim: Oggetto Simulatore
@@ -70,7 +71,7 @@ def arrivo(sim,event,okStop,route):
     else:
         return True
 
-def partenza(sim,event,okStop,route):
+def partenza(sim,event,okStop,route,trans):
     """
     Gestione di una partenza da una stazione
     :param sim: Oggetto Simulatore
@@ -124,7 +125,7 @@ def partenza(sim,event,okStop,route):
     else:
         return True
 
-def misura(sim,event,okStop,route):
+def misura(sim,event,okStop,route,trans):
     """
     Gestione dell'evento di misura con conseguente stampa indici
     :param sim: Oggetto Simulatore
@@ -150,7 +151,28 @@ def misura(sim,event,okStop,route):
     else:
         return True
 
-def fine(sim,event,okStop,route):
+def osservazione(sim,event,okStop,route,trans):
+    """
+    Gestione dell'evento di osservazione con conseguente memorizzazione dei valori per ogni
+    prova effettuata ad ogni osservazione fatta
+    :param sim: Oggetto Simulatore
+    :type sim: Simulatore
+    :param event: Oggetto Evento da gestire
+    :type event: Evento
+    :param trans: Oggetto Transitorio da aggiornare
+    :type trans: Transitorio
+    :return: Continua simulazione
+    """
+
+    # Aggiorno campo Transitorio
+    trans.indOss+=1
+    if okStop==False:
+        return False
+    else:
+        return True
+
+
+def fine(sim,event,okStop,route,trans):
     """
     Gestione della fine simulazione
     :param sim: Oggetto Simulatore

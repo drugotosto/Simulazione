@@ -7,6 +7,7 @@ __author__ = 'maury'
     - time: orologio del simulazione
     - md: modello del sistema reale che il simulazione prendera in considerazione
 """
+from settaggiSim import *
 from simulazione.gestoreEventi import *
 from struttureDati.evento import Evento
 from struttureDati.servizio import genTempMisura
@@ -30,7 +31,7 @@ class Simulatore():
         self.md=md
         self.fineTrans=0.0
 
-    def inizialization(self,nj,tFine,indStaz):
+    def inizialization(self):
         """
         Schedula un job nella future event list in uscita dalla stazione "indStaz"
         piu "tot" job in coda alla stazione "IndStaz" , un evento di misurazione
@@ -53,13 +54,18 @@ class Simulatore():
         schedula(self.eventList,Evento(self.time,-1,genTempMisura(self.time+2),"misura",-1,-1))
         # Schedulo evento fine simulazione
         schedula(self.eventList,Evento(self.time,-1,tFine,"fine",-1,-1))
+        # Andro a schedulare ad intervalli regolari delle osservazioni da effettuare sulle tracce
+        oss=1
+        while(tFine>oss*TempOss):
+            schedula(self.eventList,Evento(self.time,-1,(oss*TempOss),"osservazione",-1,-1))
+            oss+=oss
 
-    def engine(self,nj,tMax,indStaz,debug):
+    def engine(self,trans):
         """
         Motore del simulatore
         """
         # Dizionario che simula lo "switch" per richiamare la funzione adeguata all gestione dell'evento
-        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine}
+        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine,"osservazione":osservazione}
         goOn=True
         okStop=False
         # Istanzio un generatore di numeri casuali utilizzato per il routing degli eventi
@@ -90,7 +96,7 @@ class Simulatore():
                             staz.nMax=staz.Njobs
                 # Richiamo la procedura opportuna per la gestione dell'evento considerato
                 okStop=tipoEv[ev.tipo](self,ev,okStop,route)
-                restituisci(self.freeList,ev)
+                restituisci(self.freeList,ev,trans)
 
         # Stampa delle distribuzioni che compongono il tempo di servizio di una stazione
         # self.md.stazioni[1].stampaDistr()
