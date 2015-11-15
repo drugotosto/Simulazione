@@ -1,3 +1,5 @@
+from simulazione.struttureDati.prova import Prova
+
 __author__ = 'maury'
 
 """
@@ -5,10 +7,10 @@ __author__ = 'maury'
 """
 
 from tools import *
-from classTools import Display
 from struttureDati.servizio import genTempMisura
 from struttureDati.evento import Evento
 from simulazione.struttureDati.transitorio import Transitorio
+from simulazione.struttureDati.osservazione import Prova,Osservazione
 
 def arrivo(sim,event,okStop,route,trans):
     """
@@ -163,7 +165,15 @@ def osservazione(sim,event,okStop,route,trans):
     :type trans: Transitorio
     :return: Continua simulazione
     """
-
+    prova=Prova()
+    for staz in sim.md.stazioni:
+        prova.indiciStazioni.append(staz.indici)
+    # Essendo la prima prova devo andare a creare la nuova osservazione e aggiungere la prova
+    if trans.numProve==0:
+        oss=Osservazione(sim)
+        oss.indiciProve.append(prova)
+    else:
+        trans.listaOss[trans.indOss].indiciProve.append(prova)
     # Aggiorno campo Transitorio
     trans.indOss+=1
     if okStop==False:

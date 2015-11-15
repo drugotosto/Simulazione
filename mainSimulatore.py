@@ -30,5 +30,5 @@ if __name__ == '__main__':
         trans.indOss=0
         trans.numProve+=1
 
-    trans.calcolaFermezzaVarianza()
+    trans.calcolaMediaVarianza()
     trans.stampaRisultati()
