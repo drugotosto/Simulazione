@@ -7,10 +7,10 @@ nj=4
 indStaz=0
 
 # Tempo di schedulazione fine simulazione
-tFine=100000
+tFine=21000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=110000
+tMax=22000
 
 # File da cui andare a recuperar
 # e i dati
@@ -23,10 +23,7 @@ debug=False
 maxRange=100000
 
 # Numero di Run di simulazione da eseguire
-numRun=10
+numRun=5
 
 # Intervallo di osservazioni per calcolo del fine Transitorio
-TempOss=20000
-
-# Scarto accettabile
-scarto=0,001
+TempOss=10000

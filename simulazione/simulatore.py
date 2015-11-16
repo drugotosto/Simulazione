@@ -29,7 +29,6 @@ class Simulatore():
         self.freeList=[]
         self.time=np.float(0)
         self.md=md
-        self.fineTrans=0.0
 
     def inizialization(self):
         """
@@ -77,7 +76,7 @@ class Simulatore():
             oldTime=self.time
             """:type : Evento"""
             self.time=ev.occT
-            stampaSituazione(self,self.time)
+            # stampaSituazione(self,self.time)
             interval=np.float(self.time-oldTime)
             # Termino se ho gia superato la fine simulazione e sono in E.O. o se cmq ho superato la soglia massima
             if (okStop and controlloFine(self,ev,nj,indStaz))or(self.time>=tMax):
@@ -95,8 +94,8 @@ class Simulatore():
                         if staz.Njobs>staz.nMax:
                             staz.nMax=staz.Njobs
                 # Richiamo la procedura opportuna per la gestione dell'evento considerato
-                okStop=tipoEv[ev.tipo](self,ev,okStop,route)
-                restituisci(self.freeList,ev,trans)
+                okStop=tipoEv[ev.tipo](self,ev,okStop,route,trans)
+                restituisci(self.freeList,ev)
 
         # Stampa delle distribuzioni che compongono il tempo di servizio di una stazione
         # self.md.stazioni[1].stampaDistr()
@@ -106,8 +105,7 @@ class Simulatore():
         Reportistica finale sui vari indice di prestazione
         """
         print "\n\nREPORTISTICA FINE SIMULAZIONE"
-        stampaSituazione(self,self.time)
+        # stampaSituazione(self,self.time)
         calcoloStampaIndici(self)
-        print("TEMPO FINE TRANSITORIO:",self.fineTrans)
 
 

@@ -34,7 +34,7 @@ class Servizio():
                 self.distribuzioni.append(Distribuzione(self.gen,distr=distr))
 
     def genDistrIF(self):
-        # print "\nEstraggo exp di media:",self.z
+        # # print"\nEstraggo exp di media:",self.z
         num=(-np.log(self.distribuzioni[0].genNum()))*self.z
         return num
 
@@ -44,12 +44,12 @@ class Servizio():
         # Ciclo su tutte le distribuzioni che compongono la stazione di riferimento
         for distr in self.distribuzioni:
             if distr.tipo=="exponential":
-                # print "\nEstraggo exp di parametro:",(1.0/distr.s)
+                # # print"\nEstraggo exp di parametro:",(1.0/distr.s)
                 num+=(-np.log(distr.genNum()))*distr.s
             elif distr.tipo=="erlang":
-                print "\nEstraggo ERLANG di parametro:",distr.s,"k=",distr.k
+                # print"\nEstraggo ERLANG di parametro:",distr.s,"k=",distr.k
                 listCas=distr.genSeqNum(distr.k)
-                print "Sequenza num. casuali:",listCas
+                # print"Sequenza num. casuali:",listCas
                 num+=(-np.log(np.prod(listCas)))*(distr.s/distr.k)
             elif distr.tipo=="uniform":
                 nCas=distr.genNum()
@@ -67,11 +67,11 @@ class Servizio():
         return num
 
     # Stampa delle diverse distribuzioni che formano il tempo di servizio di una stazione (self)
-    def stampaDistr(self):
-        print "\nLista di distribuzioni che formano il tempo di servizio della stazione:"
-        print vars(self)
-        for distr in self.distribuzioni:
-            print "Distribuzione:",distr.info
+    # def stampaDistr(self):
+        # print"\nLista di distribuzioni che formano il tempo di servizio della stazione:"
+        # printvars(self)
+        # for distr in self.distribuzioni:
+            # print"Distribuzione:",distr.info
 
 
 class Distribuzione():
@@ -124,7 +124,7 @@ def generaSeme():
     else:
         # Produce il successivo numero primo scelto a caso
         num=pr.nth_prime(ran.randint(0,maxRange))
-    print "NUM PRIMO scelto per il seme:",num
+    # print"NUM PRIMO scelto per il seme:",num
     return num
 
 

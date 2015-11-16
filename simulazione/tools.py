@@ -10,12 +10,9 @@ import random as ran
 import collections
 import numpy as np
 import bisect as bi
-import copy
 from struttureDati.stazione import Stazione
 from struttureDati.evento import Evento
 from simulatore import *
-from settaggiSim import transInterval
-from settaggiSim import fermezza
 
 def schedula(evList,ev):
     """

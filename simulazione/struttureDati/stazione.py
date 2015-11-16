@@ -35,5 +35,5 @@ class Stazione():
         else:
             return self.servizio.genDistr()
 
-    def stampaDistr(self):
-        self.servizio.stampaDistr()
+    # def stampaDistr(self):
+    #     self.servizio.stampaDistr()
