@@ -11,6 +11,10 @@ class Osservazione():
         self.medieIndici=[]
         for i in range(len(sim.md.stazioni)):
             self.medieIndici.append({"MediaX":np.float(0),"MediaN":np.float(0)})
+        self.varianzeIndici=[]
+        for i in range(len(sim.md.stazioni)):
+            self.medieIndici.append({"VarianzaX":np.float(0),"VarianzaN":np.float(0)})
+
 
 class Prova():
     def __init__(self):

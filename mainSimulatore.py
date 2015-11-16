@@ -4,7 +4,7 @@ from settaggiSim import *
 from simulazione.struttureDati.transitorio import Transitorio
 from simulazione.struttureDati.modello import Modello
 from simulazione.simulatore import Simulatore
-
+import datetime as dt
 
 def avvioRunSimulazione(trans):
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
@@ -17,11 +17,13 @@ def avvioRunSimulazione(trans):
     # Esecuzione del simulazione
     sim.engine(trans)
     # Resoconto degli indici per le diverse stazioni
-    sim.report()
+    # sim.report()
 
 
 if __name__ == '__main__':
 
+    now=dt.datetime.now()
+    print "INIZIO:",now.strftime("%Y-%m-%d %H:%M")
     trans=Transitorio()
     while(trans.numProve<numRun):
         print "\n\n------------------- PROVA ",trans.numProve,"DI SIMULAZIONE"
@@ -32,3 +34,5 @@ if __name__ == '__main__':
 
     trans.calcolaMediaVarianza()
     trans.stampaRisultati()
+    now=dt.datetime.now()
+    print "FINE:",now.strftime("%Y-%m-%d %H:%M")

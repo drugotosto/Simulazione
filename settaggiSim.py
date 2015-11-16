@@ -7,13 +7,12 @@ nj=4
 indStaz=0
 
 # Tempo di schedulazione fine simulazione
-tFine=21000
+tFine=105000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=22000
+tMax=110000
 
-# File da cui andare a recuperar
-# e i dati
+# File da cui andare a recuperare i dati
 pathDati="exponential.json"
 
 # Seme da utilizzare per l'inizializzazione del generatore di numeri casuali
@@ -23,7 +22,7 @@ debug=False
 maxRange=100000
 
 # Numero di Run di simulazione da eseguire
-numRun=5
+numRun=50
 
 # Intervallo di osservazioni per calcolo del fine Transitorio
-TempOss=10000
+TempOss=20000

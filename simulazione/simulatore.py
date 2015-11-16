@@ -57,7 +57,7 @@ class Simulatore():
         oss=1
         while(tFine>oss*TempOss):
             schedula(self.eventList,Evento(self.time,-1,(oss*TempOss),"osservazione",-1,-1))
-            oss+=oss
+            oss+=1
 
     def engine(self,trans):
         """
@@ -100,7 +100,7 @@ class Simulatore():
         # Stampa delle distribuzioni che compongono il tempo di servizio di una stazione
         # self.md.stazioni[1].stampaDistr()
 
-    def report(self):
+    def     report(self):
         """
         Reportistica finale sui vari indice di prestazione
         """

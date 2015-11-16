@@ -5,6 +5,7 @@ __author__ = 'maury'
 """
 
 from tools import *
+import copy
 from struttureDati.servizio import genTempMisura
 from struttureDati.evento import Evento
 from simulazione.struttureDati.transitorio import Transitorio
@@ -172,7 +173,7 @@ def osservazione(sim,event,okStop,route,trans):
 
     prova=Prova()
     for staz in sim.md.stazioni:
-        prova.indiciStazioni.append(staz.indici)
+        prova.indiciStazioni.append(copy.deepcopy(staz.indici))
     # Essendo la prima prova devo andare a creare la nuova osservazione e aggiungere la prova
     if trans.numProve==0:
         oss=Osservazione(sim)

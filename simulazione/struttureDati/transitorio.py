@@ -14,22 +14,32 @@ class Transitorio():
         in base alle diverse prove fatte per ogni osservazione rilevata.
         :return:
         """
+        """print "\n\nSTAMPA delle varie prove per le diverse osservazioni!"
+        for j,oss in enumerate(self.listaOss):
+            print "\nPer osservazione",j,":"
+            for i,prova in enumerate(oss.indiciProve):
+                    print "Per la prova",i,"abbiamo valori:"
+                    for k,indici in enumerate(prova.indiciStazioni):
+                        print "Perl la stazione",k,"abbiamo valori:",indici"""
+
         # Memorizzo la somma complessiva dei vari indici, di ogni stazione, per le varie osservazioni
         for oss in self.listaOss:
             for prova in oss.indiciProve:
-                for i in range(len(prova.indiciStazioni)):
-                    for j,indStaz in enumerate(prova.indiciStazioni):
-                        if j==i:
-                            oss.sommeIndici[i]["SommaX"]+=indStaz["X"]
-                            oss.sommeIndici[i]["SommaN"]+=indStaz["N"]
+                for j,indStaz in enumerate(prova.indiciStazioni):
+                        oss.sommeIndici[j]["SommaX"]+=indStaz["X"]
+                        oss.sommeIndici[j]["SommaN"]+=indStaz["N"]
 
-        """
-        DEVO CALCOLARMI LE MEDIE E VARIANZE DELLE VARIE OSSERVAZIONI
-        """
-        for i,oss in enumerate(self.listaOss):
-            for somma in oss.sommeIndici:
-                oss.medieIndici[i]["MediaX"]=somma["SommaX"]/self.numProve
-                oss.medieIndici[i]["MediaN"]=somma["SommaN"]/self.numProve
+        # Calcolo delle medie degli indici di ogni stazione rispetto alle varie osservazioni fatte
+        for oss in self.listaOss:
+            for j,somma in enumerate(oss.sommeIndici):
+                oss.medieIndici[j]["MediaX"]=somma["SommaX"]/self.numProve
+                oss.medieIndici[j]["MediaN"]=somma["SommaN"]/self.numProve
+
+        # Calcolo della Varianza di ogni indice per ogni stazione rispetto alle osservazioni fatte
+        for oss in self.listaOss:
+            for j,media in enumerate(oss.medieIndici):
+                oss.varianzeIndici[j]["MediaX"]=media["MediaX"]
+                oss.medieIndici[j]["MediaN"]=somma["SommaN"]/self.numProve
 
 
     def stampaRisultati(self):
