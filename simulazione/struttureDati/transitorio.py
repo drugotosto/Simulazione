@@ -7,6 +7,7 @@ class Transitorio():
         self.numProve=0
         self.indOss=0
         self.listaOss=[]
+        self.varianze=[]
 
     def calcolaMediaVarianza(self):
         """
@@ -36,11 +37,40 @@ class Transitorio():
                 oss.medieIndici[j]["MediaN"]=somma["SommaN"]/self.numProve
 
         # Calcolo della Varianza di ogni indice per ogni stazione rispetto alle osservazioni fatte
-        for oss in self.listaOss:
-            for j,media in enumerate(oss.medieIndici):
-                oss.varianzeIndici[j]["MediaX"]=media["MediaX"]
-                oss.medieIndici[j]["MediaN"]=somma["SommaN"]/self.numProve
+        for i,oss in enumerate(self.listaOss):
+            SommaMedieX=[]
+            for j in range(len(self.listaOss[0].medieIndici)):
+                SommaMedieX.append(np.float(0))
+            SommaMedieN=[]
+            for j in range(len(self.listaOss[0].medieIndici)):
+                SommaMedieN.append(np.float(0))
+            listaOss=[oss2 for j,oss2 in enumerate(self.listaOss) if j<=i]
+            listaMedie=[oss2.medieIndici for oss2 in listaOss]
 
+            listaOssMedieGen=[]
+            # Sommo le medie delle prime i+1 osservazioni
+            for k,medie in enumerate(listaMedie):
+                for j,medieStaz in enumerate(medie):
+                    SommaMedieX[j]+=medieStaz["MediaX"]
+                    SommaMedieN[j]+=medieStaz["MediaN"]
+                if(i==len(self.listaOss)-1):
+                    # print "\nSommaMedieX:",SommaMedieX
+                    listaMedieGen=[mediaStaz/(k+1) for mediaStaz in SommaMedieX]
+                    listaOssMedieGen.append(listaMedieGen)
+
+            if(i==len(self.listaOss)-1):
+                """print "\nPrime",i+1,"osservazioni:"
+                for i,medie in enumerate(listaMedie):
+                    print "\nMedie Osservazione",i,":",medie
+                print "\n"
+                for i,listaMedieGen in enumerate(listaOssMedieGen):
+                    print "\nMedie generali Osservazione",i,":",listaMedieGen"""
+
+                for j in range(len(self.listaOss[0].medieIndici)):
+                    sommatoria=np.float(0)
+                    for i,medie in enumerate(listaMedie):
+                        sommatoria+=pow(medie[j]["MediaX"]-listaOssMedieGen[-1][j],2)
+                    self.varianze.append(sommatoria/len(self.listaOss))
 
     def stampaRisultati(self):
         """
@@ -54,6 +84,7 @@ class Transitorio():
                 print "----Per la stazione",j,"abbiamo:"
                 print "MEDIAX:",medie["MediaX"]
                 print "MEDIAN:",medie["MediaN"]
+        print "\nLista Varianze sulla X rilevate all'ultimo passo per le varie stazioni:",self.varianze
 
 
 

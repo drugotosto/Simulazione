@@ -23,7 +23,8 @@ def avvioRunSimulazione(trans):
 if __name__ == '__main__':
 
     now=dt.datetime.now()
-    print "INIZIO:",now.strftime("%Y-%m-%d %H:%M")
+    print "\nNJ:",nj,"tFine:",tFine,"tMax",tMax,"debug:",debug,"numRun:",numRun,"TempOss:",TempOss
+    print "\nINIZIO:",now.strftime("%Y-%m-%d %H:%M")
     trans=Transitorio()
     while(trans.numProve<numRun):
         print "\n\n------------------- PROVA ",trans.numProve,"DI SIMULAZIONE"
@@ -35,4 +36,4 @@ if __name__ == '__main__':
     trans.calcolaMediaVarianza()
     trans.stampaRisultati()
     now=dt.datetime.now()
-    print "FINE:",now.strftime("%Y-%m-%d %H:%M")
+    print "\nFINE:",now.strftime("%Y-%m-%d %H:%M")
