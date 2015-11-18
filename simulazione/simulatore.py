@@ -50,18 +50,18 @@ class Simulatore():
         self.md.stazioni[indStaz].Njobs=nj+1
         self.md.stazioni[indStaz].nMax=nj+1
         # Schedulo un evento misura per la stampa dei vari indici delle stazioni
-        schedula(self.eventList,Evento(self.time,-1,genTempMisura(self.time+2),"misura",-1,-1))
+        # schedula(self.eventList,Evento(self.time,-1,genTempMisura(self.time+2),"misura",-1,-1))
         # Schedulo evento fine simulazione
         schedula(self.eventList,Evento(self.time,-1,tFine,"fine",-1,-1))
         # Schedulo il fine transitorio (azzeramento dei valori recuperati)
-        schedula(self.eventList,Evento(self.time,-1,fineTrans,"fineTransizione",-1,-1))
+        schedula(self.eventList,Evento(self.time,-1,float(fineTrans),"transizione",-1,-1))
 
     def engine(self):
         """
         Motore del simulatore
         """
         # Dizionario che simula lo "switch" per richiamare la funzione adeguata all gestione dell'evento
-        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine,"fineTransizione":fineTransizione}
+        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine,"transizione":transizione}
         goOn=True
         okStop=False
         # Istanzio un generatore di numeri casuali utilizzato per il routing degli eventi

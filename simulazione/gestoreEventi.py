@@ -150,7 +150,7 @@ def misura(sim,event,okStop,route):
     else:
         return True
 
-def fineTransizione(sim,event,okStop,route):
+def transizione(sim,event,okStop,route):
     """
     Gestisco la fine transizione andando a resettare tutti i valori ed indici di tutte le stazioni (
     :param sim: Oggetto Simulatore
@@ -160,7 +160,7 @@ def fineTransizione(sim,event,okStop,route):
     :return: Continua simulazione
     """
     for staz in sim.md.stazioni:
-        staz.resettaCampi()
+         staz.resettaCampi()
     if okStop==False:
         return False
     else:

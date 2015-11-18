@@ -43,7 +43,6 @@ class Stazione():
         Resetto tutti i campi della stazione
         :return:
         """
-        self.Njobs=np.float(0)
         self.busyT=np.float(0)
         self.area=np.float(0)
         self.arrivi=np.float(0)

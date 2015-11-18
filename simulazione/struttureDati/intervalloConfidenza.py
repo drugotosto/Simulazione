@@ -38,12 +38,17 @@ class IntervalloConfidenza():
         # Ciclo su tutte le stazioni
         for i in range(len(self.prove[0].partenzeStazioni)):
             # Ciclo su tutte le prove fatte
-            for prova in self.prove:
-                self.sommaAreeStaz[i]+=prova.areaStazioni[i]
-                self.sommaPatenzeStaz[i]+=prova.partenzeStazioni[i]
+            for j,prova in enumerate(self.prove):
+                if (j==0):
+                    self.sommaAreeStaz.append(prova.areaStazioni[i])
+                    self.sommaPatenzeStaz.append(prova.partenzeStazioni[i])
+                else:
+                    self.sommaAreeStaz[i]+=prova.areaStazioni[i]
+                    self.sommaPatenzeStaz[i]+=prova.partenzeStazioni[i]
         
         # Calcolo lo stimatore puntuale della media del tempo di permanenza per le varie stazioni
         self.mediaStaz=[sommaArea/sommaPartenza for sommaArea,sommaPartenza in zip(self.sommaAreeStaz,self.sommaPatenzeStaz)]
+
         # Calcolo del tempo di ciclo globale del sistema
         for perm in self.mediaStaz:
             self.tempoCicl+=perm
@@ -51,6 +56,8 @@ class IntervalloConfidenza():
         print "\nTEMPI MEDI PERMANENZA su",self.numProve,"fatte:"
         for i,perm in enumerate(self.mediaStaz):
             print "Tempo medio di permanenza stazione",i,":",perm
+
+        print "Lo stimatore puntuale del tempo medio di ciclo e:",self.tempoCicl
 
     def calcolStimatoreVarianza(self):
         """
