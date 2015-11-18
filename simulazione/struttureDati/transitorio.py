@@ -70,7 +70,7 @@ class Transitorio():
                     sommatoria=np.float(0)
                     for i,medie in enumerate(listaMedie):
                         sommatoria+=pow(medie[j]["MediaX"]-listaOssMedieGen[-1][j],2)
-                    self.varianze.append(sommatoria/len(self.listaOss))
+                    self.varianze.append(sommatoria/len(self.listaOss)-1)
 
     def stampaRisultati(self):
         """
