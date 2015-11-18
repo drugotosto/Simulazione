@@ -37,3 +37,16 @@ class Stazione():
 
     def stampaDistr(self):
         self.servizio.stampaDistr()
+
+    def resettaCampi(self):
+        """
+        Resetto tutti i campi della stazione
+        :return:
+        """
+        self.Njobs=np.float(0)
+        self.busyT=np.float(0)
+        self.area=np.float(0)
+        self.arrivi=np.float(0)
+        self.partenze=np.float(0)
+        self.nMax=0
+        self.indici={'X':np.float(0),'W':np.float(0),'N':np.float(0),'U':np.float(0)}

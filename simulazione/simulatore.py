@@ -29,7 +29,6 @@ class Simulatore():
         self.freeList=[]
         self.time=np.float(0)
         self.md=md
-        self.fineTrans=0.0
 
     def inizialization(self):
         """
@@ -54,13 +53,15 @@ class Simulatore():
         schedula(self.eventList,Evento(self.time,-1,genTempMisura(self.time+2),"misura",-1,-1))
         # Schedulo evento fine simulazione
         schedula(self.eventList,Evento(self.time,-1,tFine,"fine",-1,-1))
+        # Schedulo il fine transitorio (azzeramento dei valori recuperati)
+        schedula(self.eventList,Evento(self.time,-1,fineTrans,"fineTransizione",-1,-1))
 
     def engine(self):
         """
         Motore del simulatore
         """
         # Dizionario che simula lo "switch" per richiamare la funzione adeguata all gestione dell'evento
-        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine}
+        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine,"fineTransizione":fineTransizione}
         goOn=True
         okStop=False
         # Istanzio un generatore di numeri casuali utilizzato per il routing degli eventi
@@ -72,7 +73,7 @@ class Simulatore():
             oldTime=self.time
             """:type : Evento"""
             self.time=ev.occT
-            stampaSituazione(self,self.time)
+            # stampaSituazione(self,self.time)
             interval=np.float(self.time-oldTime)
             # Termino se ho gia superato la fine simulazione e sono in E.O. o se cmq ho superato la soglia massima
             if (okStop and controlloFine(self,ev,nj,indStaz))or(self.time>=tMax):
@@ -101,8 +102,7 @@ class Simulatore():
         Reportistica finale sui vari indice di prestazione
         """
         print "\n\nREPORTISTICA FINE SIMULAZIONE"
-        stampaSituazione(self,self.time)
+        # stampaSituazione(self,self.time)
         calcoloStampaIndici(self)
-        print("TEMPO FINE TRANSITORIO:",self.fineTrans)
 
 
