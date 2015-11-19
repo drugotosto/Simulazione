@@ -1,7 +1,9 @@
 __author__ = 'maury'
 
 import numpy as np
-import settaggi as sett
+from math import sqrt
+import settaggiSim as sett
+from scipy import stats
 
 class IntervalloConfidenza():
     def __init__(self):
@@ -19,7 +21,12 @@ class IntervalloConfidenza():
         self.sommaAreaPartenzeStaz=[]
         self.mediaStaz=[]
         self.varianza=[]
-        self.tempoCicl=np.float(0)
+        self.sommaMediePartStaz=float(0)
+        self.tempoMedioCicl=np.float(0)
+        self.varianzaTempoCicl=np.float(0)
+        self.intervallo=[]
+        self.precOttenuta=float(0)
+
 
     def aggiungiDatiProva(self, prova):
         """
@@ -41,37 +48,68 @@ class IntervalloConfidenza():
             for j,prova in enumerate(self.prove):
                 if (j==0):
                     self.sommaAreeStaz.append(prova.areaStazioni[i])
+                    self.sommaAreaStazQuad.append(pow(prova.areaStazioni[i],2))
                     self.sommaPatenzeStaz.append(prova.partenzeStazioni[i])
+                    self.sommaPatenzeStazQuad.append(pow(prova.partenzeStazioni[i],2))
+                    self.sommaAreaPartenzeStaz.append(prova.areaStazioni[i]*prova.partenzeStazioni[i])
                 else:
                     self.sommaAreeStaz[i]+=prova.areaStazioni[i]
+                    self.sommaAreaStazQuad[i]+=pow(prova.areaStazioni[i],2)
                     self.sommaPatenzeStaz[i]+=prova.partenzeStazioni[i]
+                    self.sommaPatenzeStazQuad[i]+=pow(prova.partenzeStazioni[i],2)
+                    self.sommaAreaPartenzeStaz[i]+=(prova.areaStazioni[i]*prova.partenzeStazioni[i])
+
         
         # Calcolo lo stimatore puntuale della media del tempo di permanenza per le varie stazioni
         self.mediaStaz=[sommaArea/sommaPartenza for sommaArea,sommaPartenza in zip(self.sommaAreeStaz,self.sommaPatenzeStaz)]
 
         # Calcolo del tempo di ciclo globale del sistema
         for perm in self.mediaStaz:
-            self.tempoCicl+=perm
+            self.tempoMedioCicl+=perm
 
         print "\nTEMPI MEDI PERMANENZA su",self.numProve,"fatte:"
         for i,perm in enumerate(self.mediaStaz):
-            print "Tempo medio di permanenza stazione",i,":",perm
+            print "Stimatore puntuale del tempo medio di permanenza della stazione",i,":",perm
 
-        print "Lo stimatore puntuale del tempo medio di ciclo e:",self.tempoCicl
+        print "\nLo stimatore puntuale del tempo medio di ciclo e:",self.tempoMedioCicl
 
     def calcolStimatoreVarianza(self):
         """
         Calcolo dello stimatore della varianza della mia v.c. utiizzando le prove fatte (da utilizzare per calcolarsi l'intervallo di confidenza)
         :return:
         """
-        pass
+        for i in range(len(self.mediaStaz)):
+            self.varianza.append(sqrt((self.sommaAreaStazQuad[i]-(2*self.mediaStaz[i]*self.sommaAreaPartenzeStaz[i])+(pow(self.mediaStaz[i],2)*self.sommaPatenzeStazQuad[i]))/(self.numProve-1)))
+            self.varianzaTempoCicl+=self.varianza[i]
 
     def aggiornaIntervallo(self):
         """
         Controllo se ho raggiunto il livello di precisione richiesto tramite il numero di prove fatte
         :return:
         """
-        # Aggiorno il numero delle prove da fare nel caso...
-        # sett.proveN0=
+        # Calcolo la somma delle medie delle partenze di tutte le stazioni
+        for somma in self.sommaPatenzeStaz:
+            media=somma/self.numProve
+            self.sommaMediePartStaz+=media
+
+        # Calcolo i limiti dell'intervallo
+        delta=stats.t.ppf(1-(sett.alfa/2),self.numProve-1)*(self.varianzaTempoCicl)/(sqrt(self.numProve)*self.sommaMediePartStaz)
+        self.intervallo.append(self.tempoMedioCicl-delta)
+        self.intervallo.append(self.tempoMedioCicl+delta)
+
+        print "\nIntervallo che ottengo: [",self.intervallo[0],",",self.intervallo[1],"]","con alfa=",sett.alfa
+
+        # Controllo se sono riuscito a raggiungere la precisione richiesta
+        self.precOttenuta=delta/self.tempoMedioCicl
+        print "\nLa precisione richiesta e:",sett.precisione,". Quella che ottengo dopo",self.numProve,"prove effettuate e:",self.precOttenuta
+
+        if self.precOttenuta>sett.precisione:
+            # Calcolo il "presunto" numero di prove da dover ancora eseguire
+            n1=pow(round(stats.t.ppf(1-(sett.alfa/2),self.numProve-1)*self.varianzaTempoCicl/(sett.precisione*self.tempoMedioCicl*self.sommaMediePartStaz)),2)
+            print "\nIl presunto numero di prove da effettuare per raggiungere la precisione risulta",n1
+            # Aggiorno il numero di prove ancora da effettuare
+            sett.proveN0=n1
+        else:
+            print "\nPRECISIONE RAGGIUNTA!!!"
         return False
 

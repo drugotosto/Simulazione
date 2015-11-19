@@ -124,7 +124,7 @@ def generaSeme():
     else:
         # Produce il successivo numero primo scelto a caso
         num=pr.nth_prime(ran.randint(0,maxRange))
-    print "NUM PRIMO scelto per il seme:",num
+    # print "NUM PRIMO scelto per il seme:",num
     return num
 
 

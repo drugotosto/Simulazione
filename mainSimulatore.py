@@ -6,9 +6,7 @@ from simulazione.struttureDati.intervalloConfidenza import IntervalloConfidenza
 from simulazione.struttureDati.prova import Prova
 import settaggiSim as sett
 
-def avvioRunSimulazione():
-    # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
-    md=Modello(sett.pathDati,sett.debug)
+def avvioRunSimulazione(md):
     # md.stampaStazioni()
     # Creazione del simulazione passandogli il modello appena creato
     sim=Simulatore(md)
@@ -27,11 +25,15 @@ def avvioRunSimulazione():
 if __name__ == '__main__':
 
     continuaSim=True
+    # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
+    md=Modello(sett.pathDati,sett.debug)
+    # Costruisco un intervallo di Confidenza
     inter=IntervalloConfidenza()
     while(continuaSim):
         while(inter.numProve<sett.proveN0):
-            print "\n\n------------------- PROVA ",inter.numProve,"DI SIMULAZIONE"
-            prova=avvioRunSimulazione()
+            print "\n\n------------------- PROVA",inter.numProve+1,"DI SIMULAZIONE"
+            md.azzeraValoriStazioni()
+            prova=avvioRunSimulazione(md)
             inter.aggiungiDatiProva(prova)
 
         inter.calcoloStimatoreMedia()

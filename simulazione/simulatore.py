@@ -61,7 +61,7 @@ class Simulatore():
         Motore del simulatore
         """
         # Dizionario che simula lo "switch" per richiamare la funzione adeguata all gestione dell'evento
-        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine,"transizione":transizione}
+        tipoEv={"arrivo":arrivo,"partenza":partenza,"misura":misura,"fine":fine,"transizione":transitorio}
         goOn=True
         okStop=False
         # Istanzio un generatore di numeri casuali utilizzato per il routing degli eventi

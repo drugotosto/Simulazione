@@ -4,6 +4,7 @@ __author__ = 'maury'
     oggetti Stazione e memorizza la matrice di transione tra stazioni.
 """
 import json
+import numpy as np
 from simulazione.struttureDati.stazione import Stazione
 
 class Modello():
@@ -30,3 +31,13 @@ class Modello():
             print "Stazione ",staz.id,": ",vars(staz)
 
 
+    def azzeraValoriStazioni(self):
+        for staz in self.stazioni:
+            staz.Njobs=np.float(0)
+            staz.busyT=np.float(0)
+            staz.area=np.float(0)
+            staz.arrivi=np.float(0)
+            staz.partenze=np.float(0)
+            staz.nMax=0
+            staz.coda=[]
+            staz.indici={'X':np.float(0),'W':np.float(0),'N':np.float(0),'U':np.float(0)}

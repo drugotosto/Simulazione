@@ -38,7 +38,7 @@ class Stazione():
     def stampaDistr(self):
         self.servizio.stampaDistr()
 
-    def resettaCampi(self):
+    def fineTransitorio(self):
         """
         Resetto tutti i campi della stazione
         :return:
