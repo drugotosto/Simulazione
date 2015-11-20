@@ -64,12 +64,10 @@ class IntervalloConfidenza():
         self.mediaStaz=[sommaArea/sommaPartenza for sommaArea,sommaPartenza in zip(self.sommaAreeStaz,self.sommaPatenzeStaz)]
 
         # Calcolo del tempo di ciclo globale del sistema
-        for perm in self.mediaStaz:
-            self.tempoMedioCicl+=perm
-
         print "\nTEMPI MEDI PERMANENZA su",self.numProve,"fatte:"
-        for i,perm in enumerate(self.mediaStaz):
-            print "Stimatore puntuale del tempo medio di permanenza della stazione",i,":",perm
+        for i,permStaz in enumerate(self.mediaStaz):
+            self.tempoMedioCicl+=permStaz
+            print "Stimatore puntuale del tempo medio di permanenza della stazione",i,":",permStaz
 
         print "\nLo stimatore puntuale del tempo medio di ciclo e:",self.tempoMedioCicl
 

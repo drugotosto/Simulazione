@@ -25,9 +25,7 @@ def avvioRunSimulazione(md):
 
 if __name__ == '__main__':
 
-    now=dt.datetime.now()
-    print "\nNJ:",sett.nj," - tFine:",sett.tFine," - tMax",sett.tMax," - debug:",sett.debug," - #ProveIniziali:",sett.proveN0," - TempFineTrans:",sett.fineTrans," - pathDati:",sett.pathDati
-    print "\nINIZIO:",now.strftime("%Y-%m-%d %H:%M")
+    inizio=dt.datetime.now()
     continuaSim=True
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
     md=Modello(sett.pathDati,sett.debug)
@@ -44,5 +42,7 @@ if __name__ == '__main__':
         inter.calcolStimatoreVarianza()
         # Controllo se il  numero di prove effettuate e sufficiente per temrminare il calcolo dell'intervallo e aggiorna tale valore nel caso
         continuaSim=inter.aggiornaIntervallo()
-    now=dt.datetime.now()
-    print "\nFINE:",now.strftime("%Y-%m-%d %H:%M")
+    fine=dt.datetime.now()
+    print "\nNJ:",sett.nj," - tFine:",sett.tFine," - tMax",sett.tMax," - debug:",sett.debug," - #ProveIniziali:",sett.proveN0," - TempFineTrans:",sett.fineTrans," - pathDati:",sett.pathDati
+    print "\nINIZIO:",inizio.strftime("%Y-%m-%d %H:%M")
+    print "\nFINE:",fine.strftime("%Y-%m-%d %H:%M")
