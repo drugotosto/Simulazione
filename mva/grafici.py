@@ -13,7 +13,7 @@ def graficiIndice(indici):
     y2=indici[2]
     y3=indici[3]
 
-    plt.title("R")
+    plt.title("X")
     plt.xlabel("#Utenti")
     plt.ylabel("Tempo Medio Risposta")
     plt.plot(x,y0,"k",x,y1,"b",x,y2,"g",x,y3,"y")

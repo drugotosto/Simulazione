@@ -1,16 +1,16 @@
 __author__ = 'maury'
 
 # Numero di eventi da settare inizialmente in coda
-nj=2
+nj=0
 
 # Indice della stazione in cui andare ad inserire gli eventi in fase di inizializzazione
-indStaz=3
+indStaz=0
 
 # Tempo di schedulazione fine simulazione
-tFine=200000
+tFine=100000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=205000
+tMax=125000
 
 # File da cui andare a recuperare i dati
 pathDati="exponential.json"
@@ -25,7 +25,7 @@ maxRange=100000
 fineTrans=40000
 
 # Setto il numero iniziale di prove di simulazioni differenti da utilizzare (n0)
-proveN0=10
+proveN0=1
 
 # Setto il livello di precisione e livello di confidenza (alfa) desiderati
 precisione,alfa=0.1,0.05

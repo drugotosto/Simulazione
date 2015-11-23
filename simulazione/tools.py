@@ -128,7 +128,12 @@ def calcoloStampaIndici(sim):
             staz.indici["W"]=staz.area/staz.partenze
         print "T. MEDIO PERMANENZA:",staz.indici["W"]
         staz.indici["N"]=staz.area/sim.time
-        print "N. MEDIO PERSONE:",staz.indici["N"]
+        print "N. MEDIO PERSONE:",staz.indici["N"],"\n"
+
+    for i,staz in enumerate(sim.md.stazioni):
+        print "Visite alla stazione",i,"sono:",staz.partenze
+
+    print "\nTEMPO CICLO Stazione 0 job 1 utilizzando \"time stamp\":",sim.md.stazioni[0].tCicloJob
 
 def controlloFine(sim,ev,nj,indStaz):
     """

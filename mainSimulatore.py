@@ -38,10 +38,11 @@ if __name__ == '__main__':
             prova=avvioRunSimulazione(md)
             inter.aggiungiDatiProva(prova)
 
-        inter.calcoloStimatoreMedia()
-        inter.calcolStimatoreVarianza()
+        inter.calcoloStimatoreMedia(md)
+        # inter.calcolStimatoreVarianza()
         # Controllo se il  numero di prove effettuate e sufficiente per temrminare il calcolo dell'intervallo e aggiorna tale valore nel caso
-        continuaSim=inter.aggiornaIntervallo()
+        # continuaSim=inter.aggiornaIntervallo()
+        continuaSim=False
     fine=dt.datetime.now()
     print "\nNJ:",sett.nj," - tFine:",sett.tFine," - tMax",sett.tMax," - debug:",sett.debug," - #ProveIniziali:",sett.proveN0," - TempFineTrans:",sett.fineTrans," - pathDati:",sett.pathDati
     print "\nINIZIO:",inizio.strftime("%Y-%m-%d %H:%M")

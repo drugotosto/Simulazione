@@ -6,6 +6,7 @@ class Prova():
         Costruttore di una singola prova eseguita
         :return:
         """
+        self.arriviStazioni=[]
         self.partenzeStazioni=[]
         self.areaStazioni=[]
 
@@ -16,3 +17,4 @@ class Prova():
         """
         self.partenzeStazioni=[staz.partenze for staz in sim.md.stazioni]
         self.areaStazioni=[staz.area for staz in sim.md.stazioni]
+        self.arriviStazioni=[staz.arrivi for staz in sim.md.stazioni]

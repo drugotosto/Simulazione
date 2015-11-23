@@ -33,6 +33,9 @@ class Modello():
 
     def azzeraValoriStazioni(self):
         for staz in self.stazioni:
+            staz.tCicloJob=float(0)
+            staz.tPartenza=float(0)
+            staz.tArrivo=float(0)
             staz.Njobs=np.float(0)
             staz.busyT=np.float(0)
             staz.area=np.float(0)

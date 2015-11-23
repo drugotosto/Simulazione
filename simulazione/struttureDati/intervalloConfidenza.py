@@ -15,17 +15,20 @@ class IntervalloConfidenza():
         # Lista degi vari dati delle differenti prove fatte
         self.prove=[]
         self.sommaAreeStaz=[]
+        self.sommaVisite=[]
         self.sommaPatenzeStaz=[]
         self.sommaAreaStazQuad=[]
         self.sommaPatenzeStazQuad=[]
         self.sommaAreaPartenzeStaz=[]
         self.mediaStaz=[]
+        self.visiteMedie=[]
         self.varianza=[]
         self.sommaMediePartStaz=float(0)
         self.tempoMedioCicl=np.float(0)
         self.varianzaTempoCicl=np.float(0)
         self.intervallo=[]
         self.precOttenuta=float(0)
+
 
 
     def aggiungiDatiProva(self, prova):
@@ -37,14 +40,14 @@ class IntervalloConfidenza():
         self.numProve+=1
         self.prove.append(prova)
 
-    def calcoloStimatoreMedia(self):
+    def calcoloStimatoreMedia(self,md):
         """
         Calcolo dello stimatore della media della mia v.c. utilizzando le prove fatte (da utilizzare per calcolarsi l'intervallo di confidenza)
         :return:
         """
         # Ciclo su tutte le stazioni
         for i in range(len(self.prove[0].partenzeStazioni)):
-            # Ciclo su tutte le prove fatte
+            # Ciclo su tutte le prove fatte per andare a salvarmi dei valori che poi andranno ad essere utilizzati nel calcolo dell'intervallo di confidenza
             for j,prova in enumerate(self.prove):
                 if (j==0):
                     self.sommaAreeStaz.append(prova.areaStazioni[i])
@@ -52,22 +55,25 @@ class IntervalloConfidenza():
                     self.sommaPatenzeStaz.append(prova.partenzeStazioni[i])
                     self.sommaPatenzeStazQuad.append(pow(prova.partenzeStazioni[i],2))
                     self.sommaAreaPartenzeStaz.append(prova.areaStazioni[i]*prova.partenzeStazioni[i])
+                    self.sommaVisite.append(prova.partenzeStazioni[i])
                 else:
                     self.sommaAreeStaz[i]+=prova.areaStazioni[i]
                     self.sommaAreaStazQuad[i]+=pow(prova.areaStazioni[i],2)
                     self.sommaPatenzeStaz[i]+=prova.partenzeStazioni[i]
                     self.sommaPatenzeStazQuad[i]+=pow(prova.partenzeStazioni[i],2)
                     self.sommaAreaPartenzeStaz[i]+=(prova.areaStazioni[i]*prova.partenzeStazioni[i])
-
+                    self.sommaVisite[i]+=prova.partenzeStazioni[i]
         
         # Calcolo lo stimatore puntuale della media del tempo di permanenza per le varie stazioni
         self.mediaStaz=[sommaArea/sommaPartenza for sommaArea,sommaPartenza in zip(self.sommaAreeStaz,self.sommaPatenzeStaz)]
+        self.visiteMedie=[sommaVisiteStaz/self.numProve for sommaVisiteStaz in self.sommaVisite]
 
         # Calcolo del tempo di ciclo globale del sistema
-        print "\nTEMPI MEDI PERMANENZA su",self.numProve,"fatte:"
+        print "\n\nTEMPI MEDI PERMANENZA e VISITE su",self.numProve,"fatte:"
         for i,permStaz in enumerate(self.mediaStaz):
-            self.tempoMedioCicl+=permStaz
+            self.tempoMedioCicl+=(self.visiteMedie[i]*permStaz)
             print "Stimatore puntuale del tempo medio di permanenza della stazione",i,":",permStaz
+            print "Gli arrivi/visite medie fatte alla stazione",i,"e:",self.visiteMedie[i]
 
         print "\nLo stimatore puntuale del tempo medio di ciclo e:",self.tempoMedioCicl
 
