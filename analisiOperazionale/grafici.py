@@ -8,7 +8,7 @@ def graficoAsintotico(dMax,som_domande,md):
     x=np.arange(0,100)
     y1=np.zeros(100)
     y1+=1/dMax
-    y2=(1/som_domande)*x
+    y2=(1/(som_domande))*x
     p1x,p1y=genPuntiInt(dMax,som_domande)
     plt.subplot(211)
 

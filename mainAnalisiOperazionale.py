@@ -33,19 +33,18 @@ if __name__=='__main__':
     # Stampa delle stazioni
     # gsm.stampaStazioni(md)
 
-    print "\n\n*****ANALISI ASINTOTICA DEL MODELLO******"
-    print "Il Throughput massimo che il sistema puo raggiungere e dato dalla retta: y=",1/dMax
-
     # Calcolo delle domande (V*S) cioe = tempo di permanenenza con una sola persona dentro
     som_domande=0
     for val in domande:
         som_domande+=val
 
-
-    print "L'asintoto obliquo che definisce la massima crescita del throughput del sistema oltre al" \
-          "quale non e possibile andare risulta essere y: ", (1/som_domande),"x"
-    print "Il minimo tempo di risposta dato dal sistema e dato dalla retta: y=",som_domande-(md.stazioni[0].s*md.stazioni[0].visite+md.stazioni[3].s*md.stazioni[3].visite+md.stazioni[2].s*md.stazioni[2].visite)
-    print "L'asintoto obliquo che definisce la minima crescita del che puo assumere il sistema possibile risulta essere y: ",dMax,"x",-(md.stazioni[0].s*md.stazioni[0].visite+md.stazioni[3].s*md.stazioni[3].visite+md.stazioni[2].s*md.stazioni[2].visite)
+    print "\n\n*****ANALISI ASINTOTICA DEL MODELLO******"
+    print "Il Throughput massimo che il sistema puo raggiungere e dato dalla retta: y=",1/dMax
+    print "L'asintoto obliquo che definisce la massima crescita del throughput del sistema" \
+          " oltre al quale non e possibile andare risulta essere y: ", 1/(som_domande),"x"
+    print "Il minimo tempo di risposta dato dal sistema (escludendo la stazione del terminali) e dato dalla retta: y=",som_domande-(md.stazioni[0].s*md.stazioni[0].visite)
+    print "L'asintoto obliquo che definisce la minima crescita del che puo assumere il sistema (escludendo la stazione del terminali) possibile risulta essere y: ",dMax,"x -",(md.stazioni[0].s*md.stazioni[0].visite)
+    print "L'asintoto obliquo della bottleneck",(md.stazioni[1].s*md.stazioni[1].visite),"x -",(md.stazioni[0].s*md.stazioni[0].visite)
     print "Ci si aspetta Utilizzazione Max della stazione di riferimento del: ",calcoloU(dMax,md,indice_rif),"%"
 
     # Chiamata per creazione grafico analisi asitotica di X e del tempo di risposta R (sul sistema)

@@ -32,6 +32,7 @@ if __name__ == '__main__':
     # Costruisco un intervallo di Confidenza
     inter=IntervalloConfidenza()
     while(continuaSim):
+        inter.azzeraValori()
         while(inter.numProve<sett.proveN0):
             print "\n\n------------------- PROVA",inter.numProve+1,"DI SIMULAZIONE"
             md.azzeraValoriStazioni()
@@ -39,11 +40,10 @@ if __name__ == '__main__':
             inter.aggiungiDatiProva(prova)
 
         inter.calcoloStimatoreMedia(md)
-        # inter.calcolStimatoreVarianza()
+        inter.calcolStimatoreVarianza()
         # Controllo se il  numero di prove effettuate e sufficiente per temrminare il calcolo dell'intervallo e aggiorna tale valore nel caso
-        # continuaSim=inter.aggiornaIntervallo()
-        continuaSim=False
+        continuaSim=inter.aggiornaIntervallo()
     fine=dt.datetime.now()
-    print "\nNJ:",sett.nj," - tFine:",sett.tFine," - tMax",sett.tMax," - debug:",sett.debug," - #ProveIniziali:",sett.proveN0," - TempFineTrans:",sett.fineTrans," - pathDati:",sett.pathDati
+    print "\nNJ:",sett.nj," - tFine:",sett.tFine," - tMax",sett.tMax," - debug:",sett.debug," - #ProveEffettuate:",sett.proveN0," - TempFineTrans:",sett.fineTrans," - pathDati:",sett.pathDati
     print "\nINIZIO:",inizio.strftime("%Y-%m-%d %H:%M")
     print "\nFINE:",fine.strftime("%Y-%m-%d %H:%M")

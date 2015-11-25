@@ -134,6 +134,8 @@ def calcoloStampaIndici(sim):
         print "Visite alla stazione",i,"sono:",staz.partenze
 
     print "\nTEMPO CICLO Stazione 0 job 1 utilizzando \"time stamp\":",sim.md.stazioni[0].tCicloJob
+    print "CLOCK fine simulazione:",sim.time
+
 
 def controlloFine(sim,ev,nj,indStaz):
     """
