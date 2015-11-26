@@ -6,6 +6,7 @@ __author__ = 'maury'
     della route
 """
 
+import settaggiSim as sett
 import random as ran
 import collections
 import numpy as np
@@ -14,6 +15,7 @@ import copy
 from struttureDati.stazione import Stazione
 from struttureDati.evento import Evento
 from simulatore import *
+
 
 def schedula(evList,ev):
     """
@@ -130,10 +132,8 @@ def calcoloStampaIndici(sim):
         staz.indici["N"]=staz.area/sim.time
         print "N. MEDIO PERSONE:",staz.indici["N"],"\n"
 
-    for i,staz in enumerate(sim.md.stazioni):
-        print "Visite alla stazione",i,"sono:",staz.partenze
-
-    print "\nTEMPO CICLO Stazione 0 job 1 utilizzando \"time stamp\":",sim.md.stazioni[0].tCicloJob
+    sim.md.stazioni[sett.indStaz].tMedioCicloJob=sim.md.stazioni[sett.indStaz].tCicloJob/sim.md.stazioni[sett.indStaz].visite
+    print "\nTEMPO CICLO Stazione",sett.indStaz," job 1 utilizzando \"time stamp\":",sim.md.stazioni[sett.indStaz].tMedioCicloJob
     print "CLOCK fine simulazione:",sim.time
 
 

@@ -16,6 +16,7 @@ class Prova():
         self.permMedie=[]
         self.tempoMedioCicl=np.float(0)
         self.varianzaTempoCicl=np.float(0)
+        self.tempoMedioCiclTimeStamp=float(0)
 
     def registraDatiProva(self,sim):
         """
@@ -26,6 +27,7 @@ class Prova():
         self.partenzeStazioni=[staz.partenze for staz in sim.md.stazioni]
         self.arriviStazioni=[staz.arrivi for staz in sim.md.stazioni]
         self.durataSim=sim.time-sett.fineTrans
+        self.tempoMedioCiclTimeStamp=sim.md.stazioni[sett.indStaz].tMedioCicloJob
 
 
         # Calcolo i tempi medi di permanenza di tutte le stazioni

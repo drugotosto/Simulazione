@@ -26,7 +26,7 @@ def avvioRunSimulazione(md):
 if __name__ == '__main__':
 
     count=0
-    while count<100:
+    while count<sett.simNumber:
         sett.proveN0=3
         print "\n\n*************************************************SIMULAZIONE",count+1
         inizio=dt.datetime.now()
@@ -43,7 +43,7 @@ if __name__ == '__main__':
                 prova=avvioRunSimulazione(md)
                 inter.aggiungiDatiProva(prova)
 
-            inter.calcoloStimatoreMedia(md)
+            inter.calcoloStimatoreMedia()
             inter.calcolStimatoreVarianza()
             # Controllo se il  numero di prove effettuate e sufficiente per temrminare il calcolo dell'intervallo e aggiorna tale valore nel caso
             continuaSim=inter.aggiornaIntervallo()
@@ -52,4 +52,4 @@ if __name__ == '__main__':
         print "\nINIZIO:",inizio.strftime("%Y-%m-%d %H:%M")
         print "\nFINE:",fine.strftime("%Y-%m-%d %H:%M")
         count+=1
-    print "Il numero di prove di Simulazione in cui il valore teorico e dentro all'intervallo:",sett.numSimDentro
+    print "\nIl numero di prove di Simulazione in cui il valore teorico e dentro all'intervallo:",sett.numSimDentro

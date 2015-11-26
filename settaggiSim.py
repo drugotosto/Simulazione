@@ -30,5 +30,8 @@ proveN0=3
 # Setto il livello di precisione e livello di confidenza (alfa) desiderati
 precisione,alfa=0.1,0.05
 
+# Numero di simulazioni totali da effettuare
+simNumber=20
+
 # Numero di Simulazioni in cui valore teorico risulta contenuto all'interno dell'intervallo trovato
 numSimDentro=0

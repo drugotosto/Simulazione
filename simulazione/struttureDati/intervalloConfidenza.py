@@ -19,7 +19,6 @@ class IntervalloConfidenza():
         self.visiteMedie=[]
         self.permMedie=[]
         self.tempoMedioCicl=np.float(0)
-        self.tempoMedioCicl2=np.float(0)
         self.varianzaTempoCicl=np.float(0)
         self.intervallo=[]
         self.precOttenuta=float(0)
@@ -35,7 +34,6 @@ class IntervalloConfidenza():
         self.visiteMedie=[]
         self.permMedie=[]
         self.tempoMedioCicl=np.float(0)
-        self.tempoMedioCicl2=np.float(0)
         self.varianzaTempoCicl=np.float(0)
         self.intervallo=[]
         self.precOttenuta=float(0)
@@ -49,7 +47,7 @@ class IntervalloConfidenza():
         self.numProve+=1
         self.prove.append(prova)
 
-    def calcoloStimatoreMedia(self,md):
+    def calcoloStimatoreMedia(self):
         """
         Calcolo dello stimatore della media della mia v.c. utilizzando le prove fatte (da utilizzare per calcolarsi l'intervallo di confidenza)
         :return:
@@ -59,12 +57,12 @@ class IntervalloConfidenza():
             self.sommaTempiSim+=prova.durataSim
         
         # Calcolo della somma delle diverse partenze fatte ad ogni simulazione per ciascuna stazione
-        for i in range(len(self.prove[0].partenzeStazioni)):
+        """for i in range(len(self.prove[0].partenzeStazioni)):
             for j,prova in enumerate(self.prove):
                 if j==0:
                     self.sommaPartenzeStaz.append(prova.partenzeStazioni[i])
                 else:
-                    self.sommaPartenzeStaz[i]+=prova.partenzeStazioni[i]
+                    self.sommaPartenzeStaz[i]+=prova.partenzeStazioni[i]"""
         
         # Ciclo su tutte le prove fatte per calcolare visite medie (pesate) e tempi medi di permanenza (pesati) di tutte le stazioni
         for i in range(len(self.prove[0].partenzeStazioni)):
@@ -80,19 +78,15 @@ class IntervalloConfidenza():
         print "\n\nTEMPI MEDI PERMANENZA e VISITE/PARTENZE su",self.numProve,"prove fatte:"
         for i,permStaz in enumerate(self.permMedie):
             print "Stimatore puntuale del tempo medio (pesato) di permanenza della stazione",i,":",permStaz
-            print "Gli arrivi/visite medie (pesate) fatte alla stazione",i,"e:",self.visiteMedie[i]
+            print "Le visite medie (pesate) fatte alla stazione",i,"e:",self.visiteMedie[i]
             self.tempoMedioCicl+=(self.visiteMedie[i]*permStaz)
 
         print "\nLo stimatore puntuale del tempo medio di ciclo mediato su tutte le prove:",self.tempoMedioCicl,"\n"
+        tCicloMedio=float(0)
+        for prova in self.prove:
+            tCicloMedio+=prova.tempoMedioCiclTimeStamp*(prova.durataSim/self.sommaTempiSim)
+        print "Lo stimatore puntuale del tempo medio di ciclo mediato su tutte le prove tramite \"time stap\":",tCicloMedio
 
-        # Calcolo del tempo di ciclo globale del sistema utilizzando i diversi tempi medi di ciclo delle diverse prove
-        tempoMedioCiclo=float(0)
-        for i,prova in enumerate(self.prove):
-            print "Templo ciclo calcolo per run",i+1,":",prova.tempoMedioCicl
-            tempoMedioCiclo+=prova.tempoMedioCicl*(prova.durataSim/self.sommaTempiSim)
-
-        self.tempoMedioCicl2=tempoMedioCiclo
-        print "Media pesata dei tempi di ciclo:",self.tempoMedioCicl2
 
     def calcolStimatoreVarianza(self):
         """

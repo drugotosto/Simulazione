@@ -31,7 +31,8 @@ class Stazione():
         self.tCicloJob=float(0)
         self.tPartenza=float(0)
         self.tArrivo=float(0)
-
+        self.visite=float(0)
+        self.tMedioCicloJob=float(0)
 
     def genTempSer(self):
         if self.tipo=="infinite":
@@ -53,4 +54,5 @@ class Stazione():
         self.partenze=np.float(0)
         self.nMax=0
         self.tCicloJob=float(0)
+        self.visite=float(0)
         self.indici={'X':np.float(0),'W':np.float(0),'N':np.float(0),'U':np.float(0)}

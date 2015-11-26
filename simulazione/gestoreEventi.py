@@ -4,6 +4,7 @@ __author__ = 'maury'
     Gestore degli eventi che fanno parte della Future Event List
 """
 
+import settaggiSim as sett
 from tools import *
 from classTools import Display
 from struttureDati.servizio import genTempMisura
@@ -26,6 +27,12 @@ def arrivo(sim,event,okStop,route):
     partT=servT+sim.time
     # print "NUM JOBS alla stazione",sim.md.stazioni[event.idStaz].id,"sono:",sim.md.stazioni[event.idStaz].Njobs
     # print "Tempo di servizio:",servT
+    # Controllo se il job che arriva sia 1 e sia arrivato alla stazione settata come riferimento
+    if(event.idJob==1) and (event.idStaz==sett.indStaz):
+        sim.md.stazioni[event.idStaz].tArrivo=event.occT
+        sim.md.stazioni[event.idStaz].tCicloJob+=(sim.md.stazioni[event.idStaz].tArrivo-sim.md.stazioni[event.idStaz].tPartenza)
+        sim.md.stazioni[event.idStaz].tPartenza=event.occT
+        sim.md.stazioni[event.idStaz].visite+=1
     # La stazione non e I.S.
     if sim.md.stazioni[event.idStaz].tipo!="infinite":
         # Un solo evento alla stazione
@@ -54,11 +61,6 @@ def arrivo(sim,event,okStop,route):
                 accoda(sim.md.stazioni[event.idStaz],nextEv)
                 # print "Accodato evento alla stazione:",vars(nextEv)
     else:
-        # Controllo se il job che arriva sia 1 e sia arrivato alla stazione 0
-        if(event.idJob==1) and (event.idStaz==0):
-            sim.md.stazioni[event.idStaz].tArrivo=event.occT
-            sim.md.stazioni[event.idStaz].tCicloJob+=(sim.md.stazioni[event.idStaz].tArrivo-sim.md.stazioni[event.idStaz].tPartenza)
-            sim.md.stazioni[event.idStaz].tPartenza=event.occT
         # Schedulo subito la partenza dello stesso evento da I.S. nel caso prelevando dalla freeList se ci sono eventi passati
         if len(sim.freeList)>0:
             freeEv=sim.freeList.pop()
