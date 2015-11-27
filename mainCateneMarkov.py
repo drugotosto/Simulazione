@@ -12,7 +12,7 @@ if __name__=='__main__':
     print "Costruzione catena di Markov del modello dato come progetto finale (modello di un sistema)\n"
 
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
-    md=gsm.caricamentoModello("parametri.json")
+    md=gsm.caricamentoModello("tracce/parametri.json")
 
     """st1=Stato((1,0,2,3))
     print "Stato:",st1.stato,"tipo:",st1.tipo

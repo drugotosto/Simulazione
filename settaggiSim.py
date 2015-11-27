@@ -13,7 +13,7 @@ tFine=80000
 tMax=85000
 
 # File da cui andare a recuperare i dati
-pathDati="exponential.json"
+pathDati="tracce/exponential.json"
 
 # Seme da utilizzare per l'inizializzazione del generatore di numeri casuali
 debug=False

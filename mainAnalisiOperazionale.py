@@ -14,7 +14,7 @@ if __name__=='__main__':
     # Definzione #persone per cui si calcolano gli indici di prestazione
 
     # Costruzione del modello analitico preso in esame da un file json da cui si recuperano i parametri in ingresso
-    md=gsm.caricamentoModello("parametri.json")
+    md=gsm.caricamentoModello("tracce/parametri.json")
     # Calcolo le visite del modello prendendo come riferiemento la stazione 0(terminali collegati)
     visite=calcoloVisite(md,indice_rif)
     print "\nLe visite fatte alle varie stazioni durante il periodo di osservazione T (Prendendo come riferimento la stazione 0) risultano essere: "
