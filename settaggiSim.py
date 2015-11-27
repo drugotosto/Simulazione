@@ -1,19 +1,19 @@
 __author__ = 'maury'
 
 # Numero di eventi da settare inizialmente in coda
-nj=4
+nj=2
 
 # Indice della stazione in cui andare ad inserire gli eventi in fase di inizializzazione
-indStaz=0
+indStaz=3
 
 # Tempo di schedulazione fine simulazione
-tFine=25000
+tFine=161000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=27000
+tMax=165000
 
 # File da cui andare a recuperare i dati
-pathDati="exponential.json"
+pathDati="tracce/exponential.json"
 
 # Seme da utilizzare per l'inizializzazione del generatore di numeri casuali
 debug=False
@@ -25,4 +25,4 @@ maxRange=100000
 numRun=1000
 
 # Intervallo di osservazioni per calcolo del fine Transitorio
-TempOss=10000
+TempOss=20000
