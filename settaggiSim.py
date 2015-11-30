@@ -7,13 +7,13 @@ nj=2
 indStaz=0
 
 # Tempo di schedulazione fine simulazione
-tFine=80000
+tFine=1060000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=85000
+tMax=1060001
 
 # File da cui andare a recuperare i dati
-pathDati="tracce/exponential.json"
+pathDati="tracce/misto.json"
 
 # Seme da utilizzare per l'inizializzazione del generatore di numeri casuali
 debug=False
@@ -22,7 +22,7 @@ debug=False
 maxRange=100000
 
 # Tempo di fine transizione
-fineTrans=40000
+fineTrans=1000000
 
 # Setto il numero iniziale di prove di simulazioni differenti da utilizzare (n0)
 proveN0=3
@@ -31,7 +31,7 @@ proveN0=3
 precisione,alfa=0.1,0.05
 
 # Numero di simulazioni totali da effettuare
-simNumber=20
+simNumber=1
 
 # Numero di Simulazioni in cui valore teorico risulta contenuto all'interno dell'intervallo trovato
 numSimDentro=0

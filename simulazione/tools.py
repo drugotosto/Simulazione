@@ -131,6 +131,9 @@ def calcoloStampaIndici(sim):
         print "T. MEDIO PERMANENZA:",staz.indici["W"]
         staz.indici["N"]=staz.area/sim.time
         print "N. MEDIO PERSONE:",staz.indici["N"],"\n"
+        print "TEMPO SERVIZIO MEDIO:",staz.indici["U"]/staz.indici["X"]
+
+
 
     sim.md.stazioni[sett.indStaz].tMedioCicloJob=sim.md.stazioni[sett.indStaz].tCicloJob/sim.md.stazioni[sett.indStaz].visite
     print "\nTEMPO CICLO Stazione",sett.indStaz," job 1 utilizzando \"time stamp\":",sim.md.stazioni[sett.indStaz].tMedioCicloJob

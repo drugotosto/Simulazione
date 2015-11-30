@@ -29,6 +29,7 @@ class Simulatore():
         self.freeList=[]
         self.time=np.float(0)
         self.md=md
+        self.numEventi=0
 
     def inizialization(self):
         """
@@ -70,6 +71,7 @@ class Simulatore():
         while goOn:
             # Recupero prox evento dalla FUTURE EVENT LIST
             ev=recProxEvento(self.eventList)
+            self.numEventi+=1
             oldTime=self.time
             """:type : Evento"""
             self.time=ev.occT

@@ -67,12 +67,12 @@ class IntervalloConfidenza():
         # Ciclo su tutte le prove fatte per calcolare visite medie (pesate) e tempi medi di permanenza (pesati) di tutte le stazioni
         for i in range(len(self.prove[0].partenzeStazioni)):
             for j,prova in enumerate(self.prove):
-                if (j==0):
-                    self.visiteMedie.append((prova.partenzeStazioni[i]/prova.partenzeStazioni[sett.indStaz])*(prova.durataSim/self.sommaTempiSim))
-                    self.permMedie.append((prova.areaStazioni[i]/prova.partenzeStazioni[i])*(prova.durataSim/self.sommaTempiSim))
-                else:
-                    self.visiteMedie[i]+=(prova.partenzeStazioni[i]/prova.partenzeStazioni[sett.indStaz])*(prova.durataSim/self.sommaTempiSim)
-                    self.permMedie[i]+=(prova.areaStazioni[i]/prova.partenzeStazioni[i])*(prova.durataSim/self.sommaTempiSim)
+                    if (j==0):
+                        self.visiteMedie.append((prova.partenzeStazioni[i]/prova.partenzeStazioni[sett.indStaz])*(prova.durataSim/self.sommaTempiSim))
+                        self.permMedie.append((prova.areaStazioni[i]/prova.partenzeStazioni[i])*(prova.durataSim/self.sommaTempiSim))
+                    else:
+                        self.visiteMedie[i]+=(prova.partenzeStazioni[i]/prova.partenzeStazioni[sett.indStaz])*(prova.durataSim/self.sommaTempiSim)
+                        self.permMedie[i]+=(prova.areaStazioni[i]/prova.partenzeStazioni[i])*(prova.durataSim/self.sommaTempiSim)
 
         # Calcolo del tempo di ciclo globale del sistema
         print "\n\nTEMPI MEDI PERMANENZA e VISITE/PARTENZE su",self.numProve,"prove fatte:"
@@ -114,7 +114,10 @@ class IntervalloConfidenza():
 
         # Controllo se sono riuscito a raggiungere la precisione richiesta
         self.precOttenuta=delta/self.tempoMedioCicl
-        print "\nLa precisione richiesta e:",sett.precisione,". Quella che ottengo dopo",self.numProve,"prove effettuate e:",self.precOttenuta
+        print "\nLa precisione richiesta e:",sett.precisione,". Quella che ottengo dopo",self.numProve,"prove effettuate e:",self.precOttenuta,"\n"
+
+        for i,prova in enumerate(self.prove):
+            print "Il numero di eventi generati nella",i,"prova sono:",prova.numEventi
 
         if self.precOttenuta>sett.precisione:
             # Calcolo il "presunto" numero di prove da dover ancora eseguire

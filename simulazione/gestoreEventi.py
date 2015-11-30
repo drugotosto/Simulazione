@@ -111,7 +111,6 @@ def partenza(sim,event,okStop,route):
     if sim.md.q[event.idStaz].count(0.0)<(len(sim.md.stazioni)-1):
         # print "Esistono piu strade percorribili..."
         indNextStaz=chooseRoute(sim.md.q[event.idStaz],route)
-        # print "Prox Staz:",indNextStaz
     else:
         indNextStaz=sim.md.q[event.idStaz].index(1.0)
         # print "Prox Staz:",indNextStaz
@@ -166,6 +165,7 @@ def transitorio(sim,event,okStop,route):
     :type event: Evento
     :return: Continua simulazione
     """
+    sim.numEventi=0
     for staz in sim.md.stazioni:
          staz.fineTransitorio()
     if okStop==False:
