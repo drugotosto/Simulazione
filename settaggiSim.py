@@ -1,19 +1,19 @@
 __author__ = 'maury'
 
 # Numero di eventi da settare inizialmente in coda
-nj=2
+nj=9
 
 # Indice della stazione in cui andare ad inserire gli eventi in fase di inizializzazione
 indStaz=0
 
 # Tempo di schedulazione fine simulazione
-tFine=1060000
+tFine=160000
 
 # Tempo estremo termine simulazione per evitare LOOP
-tMax=1060001
+tMax=160001
 
 # File da cui andare a recuperare i dati
-pathDati="tracce/misto.json"
+pathDati="tracce/exponential.json"
 
 # Seme da utilizzare per l'inizializzazione del generatore di numeri casuali
 debug=False
@@ -22,10 +22,10 @@ debug=False
 maxRange=100000
 
 # Tempo di fine transizione
-fineTrans=1000000
+fineTrans=100000
 
 # Setto il numero iniziale di prove di simulazioni differenti da utilizzare (n0)
-proveN0=3
+proveN0=100
 
 # Setto il livello di precisione e livello di confidenza (alfa) desiderati
 precisione,alfa=0.1,0.05

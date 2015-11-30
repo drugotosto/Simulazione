@@ -128,7 +128,7 @@ class IntervalloConfidenza():
             return True
         else:
             print "\nPRECISIONE RAGGIUNTA!!!"
-            if self.intervallo[0]<=22.553195433<=self.intervallo[1]:
+            if self.intervallo[0]<=22.830389481<=self.intervallo[1]:
                 sett.numSimDentro+=1
         return False
 
