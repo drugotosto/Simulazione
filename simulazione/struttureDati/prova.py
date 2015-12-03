@@ -13,7 +13,7 @@ class Prova():
         self.partenzeStazioni=[]
         self.arriviStazioni=[]
         self.durataSim=np.float(0)
-        self.permMedie=[]
+        self.permMedie=np.zeros(4)
         self.tempoMedioCicl=np.float(0)
         self.varianzaTempoCicl=np.float(0)
         self.tempoMedioCiclTimeStamp=float(0)
@@ -33,7 +33,8 @@ class Prova():
 
         # Calcolo i tempi medi di permanenza di tutte le stazioni
         for i in range(len(self.partenzeStazioni)):
-            self.permMedie.append(self.areaStazioni[i]/self.partenzeStazioni[i])
+            if i!=0 and i!=3:
+                self.permMedie[i]=(self.areaStazioni[i]/self.partenzeStazioni[i])
 
         # Calcolo del tempo di ciclo globale del sistema
         for i,permStaz in enumerate(self.permMedie):

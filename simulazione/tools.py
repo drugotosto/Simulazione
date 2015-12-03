@@ -122,14 +122,14 @@ def calcoloStampaIndici(sim):
     """
     for staz in sim.md.stazioni:
         print "\nStazione:",staz.id,"nome:",staz.nome
-        staz.indici["U"]=staz.busyT/sim.time
+        staz.indici["U"]=staz.busyT/(sim.time-sett.fineTrans)
         print "UTILIZZAZIONE:",staz.indici["U"]
-        staz.indici["X"]=staz.partenze/sim.time
+        staz.indici["X"]=staz.partenze/(sim.time-sett.fineTrans)
         print "THROUGHPUT:",staz.indici["X"]
         if staz.partenze!=0:
             staz.indici["W"]=staz.area/staz.partenze
         print "T. MEDIO PERMANENZA:",staz.indici["W"]
-        staz.indici["N"]=staz.area/sim.time
+        staz.indici["N"]=staz.area/(sim.time-sett.fineTrans)
         print "N. MEDIO PERSONE:",staz.indici["N"],"\n"
         print "TEMPO SERVIZIO MEDIO:",staz.indici["U"]/staz.indici["X"]
 
