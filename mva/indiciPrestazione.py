@@ -85,8 +85,9 @@ def test(md,n):
     # Stampa dei valori degi vari indici per tutte le stazioni
     listaIndici=gsm.ritornaIndice(md,'W')
     for i in range(len(md.stazioni)):
-        print "La lista di indici W per la stazione ",i,": ",listaIndici[i]
-
+        print "\nLa lista di indici W per la stazione ",i,":"
+        for j,val in enumerate(listaIndici[i]):
+            print j,")  ",val
 
 def calcoloProb(md):
     # Ciclo sulle varie stazioni...

@@ -14,12 +14,6 @@ if __name__=='__main__':
     # Costruzione del modello preso in esame da un file json da cui si recuperano i parametri in ingresso
     md=gsm.caricamentoModello("tracce/parametri.json")
 
-    """st1=Stato((1,0,2,3))
-    print "Stato:",st1.stato,"tipo:",st1.tipo
-
-    st2=StatoErlang((2,4,1,4),[1,2],[3,5])
-    print "Stato:",st2.stato,"tipo:",st2.tipo,",ListaEr:",st2.listStazErl"""
-
     # Stampa delle stazioni
     # gsm.stampaStazioni(md)
 

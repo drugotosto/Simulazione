@@ -17,7 +17,7 @@ class Stato():
     - tipo: tipologia ERLANG
     - listaStazErl: lista di dizionari avente la coppia:
         * indStaz: indice della stazione che ha un numero di persone all'interno >0
-        * stadK: stadio di servizio attivo all'interno della suddeta stazione
+        * stadK: stadio di servizio attivo all'interno della suddetta stazione
 
     P.S: Strutturato in maniera tale da permentte in teoria di avere piu stati ERLANG
          contemporaneamente...

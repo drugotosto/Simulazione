@@ -15,7 +15,7 @@ def graficiIndice(indici):
 
     plt.title("W")
     plt.xlabel("#Utenti")
-    plt.ylabel("Tempo Medio Risposta")
+    plt.ylabel("Tempo Medio Permanenza")
     plt.plot(x,y0,"k",x,y1,"b",x,y2,"g",x,y3,"y")
 
     """plt.title("Stazione 2")

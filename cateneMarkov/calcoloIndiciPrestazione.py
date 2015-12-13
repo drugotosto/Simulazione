@@ -62,7 +62,7 @@ def calcoloIndici(md):
                     # Calcolo X
                     xMedio[j][i]+=(1.0/md.stazioni[j].s)*md.stazioni[j].prob[i][z]
                 elif md.stazioni[j].tipo=="erlang":
-                    xMedio[j][i]+=(1.0/(md.stazioni[j].s/md.stazioni[j].k))*md.stazioni[j].prob[i][z]
+                    xMedio[j][i]+=(1.0/(md.stazioni[j].s))*md.stazioni[j].prob[i][z]
                 elif md.stazioni[j].tipo=="infinite":
                     xMedio[j][i]+=(1.0/(md.stazioni[j].s/z))*md.stazioni[j].prob[i][z]
                 # Calcolo N
